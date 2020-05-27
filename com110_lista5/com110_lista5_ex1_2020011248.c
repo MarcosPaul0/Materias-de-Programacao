@@ -18,6 +18,7 @@ int main(void) {
         if (escolha > 6 || escolha < 1) {
             printf("\nResposta invalida! Tente novamente.\n\n");
         }
+        printf("\n\n");
         if (escolha == 1) {                              //Código do QUADRADO
             printf("Digite o comprimento dos lados: ");
             scanf("%d", &var1);
