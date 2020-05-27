@@ -6,8 +6,7 @@ int main(void) {
 
     for (i = 0; i < 20; i++)
     {
-        printf("O numero sorteado na rodada [%d] foi: ", i +1);
-        scanf("%d", &num_sorteado[i]);
+        num_sorteado[i] = rand() %10;
     }
     
     printf("\n\nOs numeros sorteados foram: ");
