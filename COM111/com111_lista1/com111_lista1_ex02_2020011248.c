@@ -1,11 +1,18 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+struct aluno
+{
+    int matricula;
+    char nome[50];
+    int diaNas;
+    int mesNas;
+    int anoNas;
+    float nota;
+};
+
+
 int main() {
-    int num;
 
-    num = (sizeof(int) * 20);
-    printf(" %d", num);
-
-    return 0;
+    system("pause");
 }

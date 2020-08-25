@@ -11,7 +11,7 @@ void preencheVetor(int *p, int linhas, int colunas) {
 }
 
 void imprimeVetor(int *p, int linhas, int colunas) {
-    printf("Os números do vetor são:\n\n");
+    printf("\n\nOs números do vetor são:\n\n");
     for (int i = 0; i < linhas * colunas; i++) {
         printf("%d", p[i]);
         if (i < linhas * colunas - 1)
@@ -33,10 +33,16 @@ void preencheMatriz(int **p, int linhas, int colunas) {
 }
 
 void imprimeMatriz(int **p, int linhas, int colunas) {
+    printf("\n\nOs números da matriz são:\n\n");
     for (int i = 0; i < linhas; i++) {
         for (int j = 0; j < colunas; j++)
         { 
-            printf("%d ", p[i][j]);
+            printf("%d", p[i][j]);
+            if (j < colunas - 1)
+            {
+                printf(" - ");
+            }
+            
         }
         printf("\n");
     }
@@ -51,6 +57,7 @@ int main() {
     scanf(" %d", &linhas);
     printf("Agora digite o número de colunas: ");
     scanf(" %d", &colunas);
+    printf("\n\n");
 
     //Alocão do Vetor
     ptrV = (int*) malloc(sizeof(int) * (linhas * colunas));
@@ -68,8 +75,12 @@ int main() {
 
     preencheMatriz(ptrM, linhas, colunas);
     imprimeMatriz(ptrM, linhas, colunas);
+    for (int i = 0; i < linhas; i++)
+    {
+        free(ptrM[i]);
+    }
     free(ptrM);
 
-    return 0;
+    system("pause");
 }
 
