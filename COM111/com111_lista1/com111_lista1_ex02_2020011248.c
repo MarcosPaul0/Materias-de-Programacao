@@ -70,6 +70,9 @@ int main() {
     scanf(" %d", &numeroAlunos);
 
     struct aluno *dados = (struct aluno*) malloc(sizeof(struct aluno) * numeroAlunos); //Aloca Memória para Todos os Alunos
+    if (dados == NULL) {
+        printf("Memória insuficiente!");
+    }
 
     preencheVetor(dados, numeroAlunos);
     imprimeVetor(dados, numeroAlunos);
@@ -81,6 +84,9 @@ int main() {
     }
     
     struct aluno *registro = (struct aluno*) malloc(sizeof(struct aluno) * numeroAprovados); //Aloca Memória para os Alunos Aprovados
+    if (registro == NULL) {
+        printf("Memória insuficiente!");
+    }
 
     preencheRegistro(dados, registro, numeroAlunos, numeroAprovados);
     imprimeVetor(registro, numeroAprovados);
@@ -90,11 +96,3 @@ int main() {
 
     system("pause");
 }
-
-/*
-(a) Alocar memória dinamicamente para um vetor do tipo ALUNO.
-(b) Preencher o vetor de alunos.
-(c) Imprimir o vetor de alunos.
-(d) Preencher o registro de um aluno.
-(e) Imprimir o registro de um aluno.
-*/
