@@ -3,7 +3,7 @@
 #include <string.h>
 #include <locale.h>
 
-typedef struct aluno {
+struct aluno {
     unsigned int matricula;
     char nome[50];
     unsigned int diaNas;
@@ -59,7 +59,6 @@ void preencheRegistro(struct aluno *dados, struct aluno *registro, int numAlunos
 
 
 void imprimeVetor(struct aluno *dados, int numAlunos) {
-    printf("DADOS DOS ALUNOS APROVADOS:\n\n");
     for (int i = 0; i < numAlunos; i++) {
         printf("Matrícula - %i.\n", dados[i].matricula);
         printf("Nome - %s.\n", dados[i].nome);
@@ -81,6 +80,7 @@ int main() {
     dados = alocaVetor(numeroAlunos);
     preencheVetor(dados, numeroAlunos);
     printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
+    printf("DADOS DOS ALUNOS REGISTRADOS:\n\n");
     imprimeVetor(dados, numeroAlunos);
 
     for (int i = 0; i < numeroAlunos; i++) {
@@ -92,6 +92,7 @@ int main() {
     registro = alocaVetor(numeroAprovados);
     preencheRegistro(dados, registro, numeroAlunos, numeroAprovados);
     printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
+    printf("DADOS DOS ALUNOS APROVADOS:\n\n");
     imprimeVetor(registro, numeroAprovados);
     
     free(dados);
