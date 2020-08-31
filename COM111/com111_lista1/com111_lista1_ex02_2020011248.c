@@ -12,6 +12,16 @@ typedef struct aluno {
     float nota;
 };
 
+void *alocaVetor(int numAlunos) {
+    struct aluno *vetor;
+    vetor = (struct aluno*) malloc(sizeof(struct aluno) * numAlunos);
+    if (vetor == NULL) {
+        printf("Memória Insuficiente!");
+    } else {
+        return vetor;
+    }
+}
+
 void preencheVetor(struct aluno *dados, int numAlunos) {
     printf("\n\nPREENCHA OS DADOS DOS ALUNOS:\n\n");
     for (int i = 0; i < numAlunos; i++) {
@@ -32,21 +42,18 @@ void preencheVetor(struct aluno *dados, int numAlunos) {
 }
 
 void preencheRegistro(struct aluno *dados, struct aluno *registro, int numAlunos, int numAprovados) {
-    int i, j = 0;
+    int j = 0;
 
-    for (i = 0; i < numAlunos; i++) {
-        while (j < numAprovados) {
-            if (dados[j].nota >= 6) {
-                registro[j].matricula = dados[i].matricula;
-                strncpy(registro[j].nome, dados[i].nome, 50);
-                registro[j].diaNas = dados[i].diaNas;
-                registro[j].mesNas = dados[i].mesNas;
-                registro[j].anoNas = dados[i].anoNas;
-                registro[j].nota = dados[i].nota;
-            }
-            break;
+    for (int i = 0; i < numAlunos; i++) {
+        if (dados[i].nota >= 6) {
+            registro[j].matricula = dados[i].matricula;
+            strncpy(registro[j].nome, dados[i].nome, 50);
+            registro[j].diaNas = dados[i].diaNas;
+            registro[j].mesNas = dados[i].mesNas;
+            registro[j].anoNas = dados[i].anoNas;
+            registro[j].nota = dados[i].nota;
+            j++;
         }
-        j++;
     }
 }
 
@@ -69,12 +76,11 @@ int main() {
     printf("Digite o número de alunos: ");
     scanf(" %d", &numeroAlunos);
 
-    struct aluno *dados = (struct aluno*) malloc(sizeof(struct aluno) * numeroAlunos); //Aloca Memória para Todos os Alunos
-    if (dados == NULL) {
-        printf("Memória insuficiente!");
-    }
+    struct aluno *dados, *registro;
 
+    dados = alocaVetor(numeroAlunos);
     preencheVetor(dados, numeroAlunos);
+    printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
     imprimeVetor(dados, numeroAlunos);
 
     for (int i = 0; i < numeroAlunos; i++) {
@@ -82,17 +88,14 @@ int main() {
             numeroAprovados++;
         }
     }
-    
-    struct aluno *registro = (struct aluno*) malloc(sizeof(struct aluno) * numeroAprovados); //Aloca Memória para os Alunos Aprovados
-    if (registro == NULL) {
-        printf("Memória insuficiente!");
-    }
 
+    registro = alocaVetor(numeroAprovados);
     preencheRegistro(dados, registro, numeroAlunos, numeroAprovados);
+    printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
     imprimeVetor(registro, numeroAprovados);
     
     free(dados);
     free(registro);
 
-    system("pause");
+    return 0;
 }

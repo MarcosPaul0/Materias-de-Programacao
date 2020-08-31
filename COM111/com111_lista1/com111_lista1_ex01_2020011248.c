@@ -22,12 +22,13 @@ void imprimeVetor(int *p, int linhas, int colunas) {
     printf("\n\n");
 }
 
-void preencheMatriz(int **p, int linhas, int colunas) {
-    for (int i = 0; i < linhas; i++) {
-        for (int j = 0; j < colunas; j++)
+void preencheMatriz(int **p, int *v, int linhas, int colunas) {
+    int k = (linhas * colunas) - 1;
+    for (int i = linhas - 1; i >= 0; i--) {
+        for (int j = colunas - 1; j >= 0; j--)
         {
-            printf("Preencha a matriz na posição [%d][%d]: ", i + 1, j + 1);
-            scanf(" %d", &p[i][j]);
+            p[i][j] = v[k];
+            k--;
         }
     }
 }
@@ -59,12 +60,14 @@ int main() {
     scanf(" %d", &colunas);
     printf("\n\n");
 
-    //Alocão do Vetor
+    //Alocação do Vetor
     ptrV = (int*) malloc(sizeof(int) * (linhas * colunas));
+    if (ptrV == NULL) {
+        printf("Memória insuficiente!");
+    }
     
     preencheVetor(ptrV, linhas, colunas);
     imprimeVetor(ptrV, linhas, colunas);
-    free(ptrV);
 
     //Alocação da Matriz
     ptrM = (int**) malloc(sizeof(int) * linhas);
@@ -72,15 +75,22 @@ int main() {
     {
         ptrM[i] = (int*) malloc(sizeof(int) * colunas);
     }
+    if (ptrM == NULL) {
+        printf("Memória insuficiente!");
+    }
 
-    preencheMatriz(ptrM, linhas, colunas);
+    preencheMatriz(ptrM, ptrV, linhas, colunas);
+    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     imprimeMatriz(ptrM, linhas, colunas);
+    
+    //Liberação de memória
     for (int i = 0; i < linhas; i++)
     {
         free(ptrM[i]);
     }
     free(ptrM);
+    free(ptrV);
 
-    system("pause");
+    return 0;
 }
 
