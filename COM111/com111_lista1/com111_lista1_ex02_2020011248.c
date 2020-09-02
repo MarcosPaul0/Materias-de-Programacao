@@ -41,7 +41,7 @@ void preencheVetor(struct aluno *dados, int numAlunos) {
     }
 }
 
-void preencheRegistro(struct aluno *dados, struct aluno *registro, int numAlunos, int numAprovados) {
+void preencheRegistro(struct aluno *dados, struct aluno *registro, int numAlunos) {
     int j = 0;
 
     for (int i = 0; i < numAlunos; i++) {
@@ -90,7 +90,7 @@ int main() {
     }
 
     registro = alocaVetor(numeroAprovados);
-    preencheRegistro(dados, registro, numeroAlunos, numeroAprovados);
+    preencheRegistro(dados, registro, numeroAlunos);
     printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
     printf("DADOS DOS ALUNOS APROVADOS:\n\n");
     imprimeVetor(registro, numeroAprovados);
