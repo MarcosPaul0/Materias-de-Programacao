@@ -41,23 +41,6 @@ void preencheVetor(struct aluno *dados, int numAlunos) {
     }
 }
 
-void preencheRegistro(struct aluno *dados, struct aluno *registro, int numAlunos, int numAprovados) {
-    int j = 0;
-
-    for (int i = 0; i < numAlunos; i++) {
-        if (dados[i].nota >= 6) {
-            registro[j].matricula = dados[i].matricula;
-            strncpy(registro[j].nome, dados[i].nome, 50);
-            registro[j].diaNas = dados[i].diaNas;
-            registro[j].mesNas = dados[i].mesNas;
-            registro[j].anoNas = dados[i].anoNas;
-            registro[j].nota = dados[i].nota;
-            j++;
-        }
-    }
-}
-
-
 void imprimeVetor(struct aluno *dados, int numAlunos) {
     for (int i = 0; i < numAlunos; i++) {
         printf("Matrícula - %i.\n", dados[i].matricula);
@@ -67,6 +50,17 @@ void imprimeVetor(struct aluno *dados, int numAlunos) {
     }
 }
 
+void imprimeAprovados(struct aluno *dados, int numAlunos) {
+    printf("DADOS DOS ALUNOS APROVADOS:\n\n");
+    for (int i = 0; i < numAlunos; i++) {
+        if (dados[i].nota >= 6) {
+            printf("Matrícula - %i.\n", dados[i].matricula);
+            printf("Nome - %s.\n", dados[i].nome);
+            printf("Data de nascimento - %d/%d/%d.\n", dados[i].diaNas, dados[i].mesNas, dados[i].anoNas);
+            printf("Nota - %.1f.\n\n", dados[i].nota);
+        }
+    }
+}
 
 int main() {
     int numeroAlunos, numeroAprovados = 0;
@@ -75,7 +69,7 @@ int main() {
     printf("Digite o número de alunos: ");
     scanf(" %d", &numeroAlunos);
 
-    struct aluno *dados, *registro;
+    struct aluno *dados;
 
     dados = alocaVetor(numeroAlunos);
     preencheVetor(dados, numeroAlunos);
@@ -89,14 +83,9 @@ int main() {
         }
     }
 
-    registro = alocaVetor(numeroAprovados);
-    preencheRegistro(dados, registro, numeroAlunos, numeroAprovados);
     printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
-    printf("DADOS DOS ALUNOS APROVADOS:\n\n");
-    imprimeVetor(registro, numeroAprovados);
-    
-    free(dados);
-    free(registro);
+    imprimeAprovados(dados, numeroAlunos);
 
+    free(dados);
     return 0;
 }
