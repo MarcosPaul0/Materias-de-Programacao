@@ -67,6 +67,7 @@ int main() {
     }
     
     preencheVetor(ptrV, linhas, colunas);
+    printf("\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-");
     imprimeVetor(ptrV, linhas, colunas);
 
     //Alocação da Matriz
