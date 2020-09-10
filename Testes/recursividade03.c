@@ -1,11 +1,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int mamc(int n1, int n2) {
-    if (n1 == 0) {
-        return n2;
+int mamc(int m, int n) {
+    if (n == 0) {
+        return m;
     }
-    return mamc(n2 % n1, n1);
+    return mamc(n, m % n);
 }
 
 int main() {
