@@ -27,48 +27,48 @@ int main() {
                 printf("Digite o número imaginário [B]: ");
                 scanf(" %f", &y);
                 if (i == 0) {
-                    real = criaComplexo(x, y);
+                    real = criaComplexo(x, y);  //Cria primeiro número complexo
                 } else if (i == 1) {
-                    imag = criaComplexo(x, y);
+                    imag = criaComplexo(x, y);  //Cria segundo número complexo
                 }
             }
         }
 
         switch (opc) {
         case 1:
-            resultado = somaComplexa(real, imag);
+            resultado = somaComplexa(real, imag);   //Soma dois números complexos
 
-            imprimeNumComplex(resultado);
+            imprimeNumComplex(resultado);   //Imprime o número complexo
 
-            liberaComplexo(real);
-            liberaComplexo(imag);
+            liberaComplexo(real);   //Libera ponteiro de números complexos
+            liberaComplexo(imag);   //Libera ponteiro de números complexos
             break;
         
         case 2:
-            resultado = subComplexa(real, imag);
+            resultado = subComplexa(real, imag);    //Subtrai dois números complexos
 
-            imprimeNumComplex(resultado);
+            imprimeNumComplex(resultado);   //Imprime o número complexo
 
-            liberaComplexo(real);
-            liberaComplexo(imag);
+            liberaComplexo(real);   //Libera ponteiro de números complexos
+            liberaComplexo(imag);   //Libera ponteiro de números complexos
             break;
 
         case 3:
-            resultado = multComplexa(real, imag);
+            resultado = multComplexa(real, imag);   //Multiplica dois números complexos
 
-            imprimeNumComplex(resultado);
+            imprimeNumComplex(resultado);   //Imprime o número complexo
 
-            liberaComplexo(real);
-            liberaComplexo(imag);
+            liberaComplexo(real);   //Libera ponteiro de números complexos
+            liberaComplexo(imag);   //Libera ponteiro de números complexos
             break;
 
         case 4:
-            resultado = divComplexa(real, imag);
+            resultado = divComplexa(real, imag);   //Divide dois números complexos
 
-            imprimeNumComplex(resultado);
+            imprimeNumComplex(resultado);   //Imprime o número complexo
 
-            liberaComplexo(real);
-            liberaComplexo(imag);
+            liberaComplexo(real);   //Libera ponteiro de números complexos
+            liberaComplexo(imag);   //Libera ponteiro de números complexos
             break;
 
         default:
