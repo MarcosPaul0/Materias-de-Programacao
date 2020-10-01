@@ -333,10 +333,26 @@ int imprimir_lista(Lista *li)
 Lista* concatena_lista(Lista *l1, Lista *l2) {
   Lista *l3;
   l3 = criar_lista();
-  Elemento *no;
-  no = criar_elemento();
+  Elemento *no = *l3;
 
+  if (l1 != NULL) {
+    Elemento *aux = *l1;
+    while (aux != NULL) {
+      inserir_lista_final(l3, aux->dado);
+      aux = aux->prox;
+    }
+  }
 
+  if (l2 != NULL) {
+    Elemento *aux = *l2;
+    while (aux != NULL) {
+      inserir_lista_final(l3, aux->dado);
+      aux = aux->prox;
+    }
+  }
+
+  liberar_lista(l1);
+  liberar_lista(l2);
 
   return l3;
 }
