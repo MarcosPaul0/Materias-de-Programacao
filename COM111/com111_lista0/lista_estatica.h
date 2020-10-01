@@ -29,3 +29,18 @@ int buscar_lista_posicao(Lista *li, int pos, struct aluno *dado);
 int buscar_lista_dado(Lista *li, int dado, int *pos);
 
 int imprimir_lista(Lista *li);
+
+// funções adicionadas
+
+/*i. Receba duas listas e retorne uma terceira contendo as duas primeiras concatenadas.
+ii. Dada uma lista L1, crie e retorne uma cópia dela em L2 eliminando os valores repetidos
+(matrícula do aluno).
+iii. Dada uma lista L1, inverta a lista e armazene em L2. A função deve retornar a lista L2.
+iv. Verique se a lista está ordenada ou não (crescente ou decrescente), de acordo com a matrícula
+do aluno.
+v. Calcule e retorne o tamanho da lista dinâmica encadeada. A função deve ser recursiva.*/
+
+Lista* concatena_lista(Lista *l1, Lista *l2);
+Lista* copia_lista(Lista *li);
+Lista* inverte_lista(Lista *l1);
+int verifica_ordem(Lista *li);

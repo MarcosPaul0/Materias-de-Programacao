@@ -232,3 +232,19 @@ int imprimir_lista(Lista *li)
 
   return 1;
 }
+
+Lista* concatena_lista(Lista *l1, Lista *l2) {
+
+}
+
+Lista* copia_lista(Lista *li) {
+
+}
+
+Lista* inverte_lista(Lista *l1) {
+
+}
+
+int verifica_ordem(Lista *li) {
+  
+}
