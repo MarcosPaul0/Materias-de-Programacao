@@ -366,7 +366,41 @@ Lista* inverte_lista(Lista *l1) {
 }
 
 int verifica_ordem(Lista *li) {
+  if (li == NULL) {
+    return 0;
+  }
 
+  Elemento *atual = *li;
+  Elemento *anterior = *li;
+  int cont_elementos = 0, cont_ordem = 0;
+
+  while (atual->prox != NULL) {
+    anterior = atual;
+    if (anterior->dado.matricula > atual->dado.matricula) {
+      cont_ordem++;
+    }
+    atual = atual->prox;
+    cont_elementos++;
+  }
+  if (cont_elementos == cont_ordem) {
+    return 1;
+  }
+
+  cont_elementos = 0;
+  cont_ordem = 0;
+  while (atual->prox != NULL) {
+    anterior = atual;
+    if (anterior->dado.matricula < atual->dado.matricula) {
+      cont_ordem++;
+    }
+    atual = atual->prox;
+    cont_elementos++;
+  }
+  if (cont_elementos == cont_ordem) {
+    return 2;
+  } else {
+    return -1;
+  }
 }
 
 int calcula_tamanho(Lista *li) {

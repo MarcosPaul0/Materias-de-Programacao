@@ -33,8 +33,9 @@ int main(void) {
     printf("\n9 - Buscar elemento pela posição");
     printf("\n10 - Buscar elemento pelo dado");
     printf("\n11 - Concatena listas");
-    printf("\n16 - Cria segunda lista (você não pode modificar a lista 1)");
+    printf("\n14 - Verificar se está ordenado");
     printf("\n15 - Tamanho da Lista");
+    printf("\n16 - Cria segunda lista (você não pode modificar a lista 1)");
     printf("\n17 - Imprimir lista");
     printf("\n18 - Sair");
     
@@ -238,6 +239,25 @@ int main(void) {
           break;
       
       case 14:
+          if (lista2 == 1) {
+            ok = verifica_ordem(li2);
+            if (ok == 1) {
+              printf("\nA lista está em ordem decrescente!");
+            } else if (ok == 2) {
+              printf("\nA lista está em ordem crescente!");
+            } else {
+              printf("\nA lista não está ordenada!");
+            }
+          } else {
+            ok = verifica_ordem(li);
+            if (ok == 1) {
+              printf("\nA lista está em ordem decrescente!");
+            } else if (ok == 2) {
+              printf("\nA lista está em ordem crescente!");
+            } else {
+              printf("\nA lista não está ordenada!");
+            }
+          }
           break;
 
       case 15:
