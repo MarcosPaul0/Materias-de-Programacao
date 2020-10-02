@@ -358,7 +358,24 @@ Lista* concatena_lista(Lista *l1, Lista *l2) {
 }
 
 Lista* copia_lista(Lista *li) {
+  if (li == NULL) {
+    return 0;
+  }
 
+  Elemento *no = *li;
+  Lista *li2 = criar_lista();
+  Elemento *aux = *li2;
+  int pos;
+
+  while (no->prox != NULL) {
+    if (buscar_lista_dado(li2, no->dado, &pos) != 1) {
+      aux->dado = no->dado;
+    }
+    no = no->prox;
+    aux = aux->prox;
+  }
+  
+  return li2;
 }
 
 Lista* inverte_lista(Lista *l1) {

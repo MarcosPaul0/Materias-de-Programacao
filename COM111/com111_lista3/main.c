@@ -33,6 +33,7 @@ int main(void) {
     printf("\n9 - Buscar elemento pela posição");
     printf("\n10 - Buscar elemento pelo dado");
     printf("\n11 - Concatena listas");
+    printf("\n12 - Copia dados retirando os repetidos");
     printf("\n14 - Verificar se está ordenado");
     printf("\n15 - Tamanho da Lista");
     printf("\n16 - Cria segunda lista (você não pode modificar a lista 1)");
@@ -223,6 +224,7 @@ int main(void) {
         break;
 
       case 11:
+        // concatena duas listas
         if (lista2 != 1) {
           printf("\nNão é possivel concatenar!");
           printf("\nCrie outra lista");
@@ -233,12 +235,23 @@ int main(void) {
         break;
 
       case 12:
+          if (lista2 == 1) {
+            li = copia_lista(li2);
+            printf("Os itens copiados foram: ");
+            imprimir_lista(li);
+          } else {
+            li2 = copia_lista(li);
+            printf("Os itens copiados foram: ");
+            imprimir_lista(li2);
+          }
+          
           break;
           
       case 13:
           break;
       
       case 14:
+          // indica se a lista está em ordem
           if (lista2 == 1) {
             ok = verifica_ordem(li2);
             if (ok == 1) {
@@ -261,6 +274,7 @@ int main(void) {
           break;
 
       case 15:
+        // retorna o tamanho da lista
         if (lista2 == 1) {
           printf("\nA lista possui tamanho %d\n\n", calcula_tamanho(li2));
         } else {
