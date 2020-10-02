@@ -379,7 +379,18 @@ Lista* copia_lista(Lista *li) {
 }
 
 Lista* inverte_lista(Lista *l1) {
+  if (l1 == NULL) {
+    return 0;
+  }
+  Elemento *no = *l1;
+  Lista *l2 = criar_lista();
 
+  while (no->prox != NULL) {
+    inserir_lista_inicio(l2, no->dado);
+    no = no->prox;
+  }
+
+  return l2;
 }
 
 int verifica_ordem(Lista *li) {

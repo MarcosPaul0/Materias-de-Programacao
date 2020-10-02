@@ -34,6 +34,7 @@ int main(void) {
     printf("\n10 - Buscar elemento pelo dado");
     printf("\n11 - Concatena listas");
     printf("\n12 - Copia dados retirando os repetidos");
+    printf("\n13 - Inverter lista");
     printf("\n14 - Verificar se está ordenado");
     printf("\n15 - Tamanho da Lista");
     printf("\n16 - Cria segunda lista (você não pode modificar a lista 1)");
@@ -248,6 +249,13 @@ int main(void) {
           break;
           
       case 13:
+      if (lista2 == 1) {
+        li2 = inverte_lista(li2);
+        printf("\nLista invertida!");
+      } else {
+        li = inverte_lista(li);
+        printf("\nLista invertida!");
+      }
           break;
       
       case 14:
