@@ -26,7 +26,6 @@ int liberar_lista(Lista *li)
 
   Elemento *no;
   while(*li){
-    printf("lala");
     no = *li;
     *li = (*li)->prox;
     free(no);
@@ -362,33 +361,40 @@ Lista* copia_lista(Lista *li) {
     return 0;
   }
 
+  Lista *l2 = criar_lista();
   Elemento *no = *li;
-  Lista *li2 = criar_lista();
-  Elemento *aux = *li2;
   int pos;
-
+  
   while (no->prox != NULL) {
-    if (buscar_lista_dado(li2, no->dado, &pos) != 1) {
-      aux->dado = no->dado;
+    if (!(buscar_lista_dado(l2, no->dado, &pos))) {
+      inserir_lista_final(l2, no->dado);
     }
     no = no->prox;
-    aux = aux->prox;
   }
-  
-  return li2;
+
+  if (!(buscar_lista_dado(l2, no->dado, &pos))) {
+      inserir_lista_final(l2, no->dado);
+  }
+
+  return l2;
 }
 
-Lista* inverte_lista(Lista *l1) {
+Lista* inverte_lista(Lista *l1) {   //ERRO (CORRIGIR)
   if (l1 == NULL) {
     return 0;
   }
-  Elemento *no = *l1;
-  Lista *l2 = criar_lista();
 
-  while (no->prox != NULL) {
-    inserir_lista_inicio(l2, no->dado);
+  Lista *l2 = criar_lista();
+  Elemento *no = *l1;
+  int ok;
+  
+  while (no->prox != NULL)
+  {
+    ok = inserir_lista_inicio(l2, no->dado);
     no = no->prox;
   }
+
+  ok = inserir_lista_inicio(l2, no->dado);
 
   return l2;
 }

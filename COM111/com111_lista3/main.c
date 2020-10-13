@@ -236,26 +236,30 @@ int main(void) {
         break;
 
       case 12:
+      // copia e excluindo os repetidos
           if (lista2 == 1) {
+            liberar_lista(li);
+            li = criar_lista();
             li = copia_lista(li2);
-            printf("Os itens copiados foram: ");
+            printf("Os itens copiados para lista 1 foram: ");
             imprimir_lista(li);
           } else {
+            li2 = criar_lista();
             li2 = copia_lista(li);
-            printf("Os itens copiados foram: ");
+            printf("Os itens copiados lista 2 foram: ");
             imprimir_lista(li2);
           }
           
           break;
           
       case 13:
-      if (lista2 == 1) {
-        li2 = inverte_lista(li2);
-        printf("\nLista invertida!");
-      } else {
-        li = inverte_lista(li);
-        printf("\nLista invertida!");
-      }
+        if (lista2 == 1) {
+          li2 = inverte_lista(li2);
+          printf("\nLista invertida!");
+        } else {
+          li = inverte_lista(li);
+          printf("\nLista invertida!");
+        }
           break;
       
       case 14:
