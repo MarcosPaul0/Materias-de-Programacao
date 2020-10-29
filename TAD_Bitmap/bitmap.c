@@ -3,357 +3,45 @@
 #include <string.h>
 #include "bitmap.h"
 
-// Função para criar o bitmap
-int* criar_bitmap(int id){
-
-	int *bitmap = (int*) calloc(id, sizeof(int*));
-
-	return bitmap;
-}
-
-
-// Função para liberar o bitmap
-int liberar_bitmap(int* bitmap){
-	if(bitmap == NULL){
-		return 0;
-	}
-
-	free(bitmap);
-
-	return 1;
-}
-
-
-// Função para imprimir o bitmap
-void imprime_bitmap(int* bitmap, int lim){
-	int i;
-
-	for(i=0; i<lim; i++){
-		printf("%d ", bitmap[i]);
-	}
-
-}
-
-
-// Função com os comandos do bitmap, para ficar organizado
-void comandos_bitmap(int* bitmap, int cod){
-	int i;
-	//printf("A");
-	FILE *dados;
-
-	char auxc;
-	char *nome, codigo, sexo, nacion, comprou;
-	int cont;
-	int idade, id;
-
-
-	auxc = 'a';
-	cont = 0;
-	//observa quantos dados tem no arquivo
-	dados = fopen("dados.txt", "r");
-		rewind(dados);
-		while(auxc != EOF){
-			auxc = fgetc(dados);
-			if(auxc == '\n')
-				cont++;
-		}
-	fclose(dados);
-	
-	//comandos
-	switch(cod){
-		case 1: //bitmap sexo
-
-			dados = fopen("dados.txt", "r");
-				rewind(dados);
-
-				for(i=0; i<cont; i++){
-					fscanf(dados, " %s %c %d %c %c %d", nome, &sexo, &idade, &nacion, &comprou, &id);
-					//printf("\nsexo = %c", sexo);
-
-					// Faz o bitmap em si
-					if(sexo == 'F')
-						bitmap[i] = 1;
-					else //sexo == 'M'
-						bitmap[i] = 0;
-					auxc = fgetc(dados);
-				}
-			fclose(dados);
-
-			printf("\nBitmap igualdade (sexo) (1 = F, 0 = M):\n");
-			imprime_bitmap(bitmap, id);
-
-			break;
-
-		case 2: //bitmap nacionalidade
-
-			dados = fopen("dados.txt", "r");
-				rewind(dados);
-
-				for(i=0; i<cont; i++){
-					fscanf(dados, " %s %c %d %c %c %d", nome, &sexo, &idade, &nacion, &comprou, &id);
-
-					// Faz o bitmap em si
-					if(nacion == 'N')
-						bitmap[i] = 1;
-					else //nacion == E
-						bitmap[i] = 0;
-					auxc = fgetc(dados);
-				}
-			fclose(dados);
-
-			printf("\nBitmap igualdade (nacionalidade) (1 = Nativo, 0 = Estrangeiro):\n");
-			imprime_bitmap(bitmap, id);
-
-			break;
-		case 3: //bitmap comprou pacote
-
-      dados = fopen("dados.txt", "r");
-				rewind(dados);
-
-				for(i=0; i<cont; i++){
-					fscanf(dados, " %s %c %d %c %c %d", nome, &sexo, &idade, &nacion, &comprou, &id);
-
-					// Faz o bitmap em si
-					if(comprou == 'S')
-						bitmap[i] = 1;
-					else //comprou == 'N'
-						bitmap[i] = 0;
-					auxc = fgetc(dados);
-				}
-			fclose(dados);
-
-			printf("\nBitmap igualdade (pacote) (1 = Sim, 0 = Não):\n");
-			imprime_bitmap(bitmap, id);
-
-			break;
-		case 4: //bitmap promoção
-
-			dados = fopen("dados.txt", "r");
-				rewind(dados);
-
-				for(i=0; i<cont; i++){
-					fscanf(dados, " %s %c %d %c %c %d", nome, &sexo, &idade, &nacion, &comprou, &id);
-
-					// Faz o bitmap em si
-					if(idade < 18 || idade > 60)
-						bitmap[i] = 1;
-					else //idade >= 18 || idade <=60
-						bitmap[i] = 0;
-					auxc = fgetc(dados);
-				}
-			fclose(dados);
-
-			printf("\nBitmap igualdade (promoção) (1 = Sim, 0 = Não):\n");
-			imprime_bitmap(bitmap, id);
-
-			break;
-
-		case 5: //bitmap promoção especial
-
-			dados = fopen("dados.txt", "r");
-				rewind(dados);
-
-				for(i=0; i<cont; i++){
-					fscanf(dados, " %s %c %d %c %c %d", nome, &sexo, &idade, &nacion, &comprou, &id);
-
-					// Faz o bitmap em si
-					if(idade > 18 && nacion == 'E' && comprou == 'N')
-						bitmap[i] = 1;
-					else
-						bitmap[i] = 0;
-					auxc = fgetc(dados);
-				}
-			fclose(dados);
-
-			printf("\nBitmap AND -- promoção especial\n");
-			printf("Acontece quando a pessoa tem mais de 18 anos, é estrangeira e não comprou o pacote ainda\n");
-			printf("1 = Promoção especial disponível, 0 = Não disponível:\n");
-			imprime_bitmap(bitmap, id);
-
-			break;
-		default:
-			break;
-	}
-
-	return;
-}
-
-
 /*
-	void bitmap_igualdade(int* bitmap){
-		int i;
-
-		FILE *dados;
-
-		char auxc = 'a', *nome, codigo, sexo;
-		int cont = 0, idade, id;
-
-		dados = fopen("dados.txt", "r");
-			while(auxc != EOF){
-				auxc = fgetc(dados);
-				if(auxc == '\n')
-					cont++;
-			}
-			rewind(dados);
-			for(i=0; i<cont; i++){
-
-				fscanf(dados, " %s %c %d %c %d", nome, &sexo, &idade, &codigo, &id);
-				if(sexo == 'M'){
-					bitmap[0][i] = 1;
-					bitmap[1][i] = 0;	
-				}
-				else{
-					bitmap[1][i] = 1;
-					bitmap[0][i] = 0;
-				}
-				auxc = fgetc(dados);
-			}
-		fclose(dados);
-
-
-		return;
-	}*/
-	
-	int* criar_matriz(int id){
-		int i, j;
-		//id = id-1;
-		//Matriz de numero de linhas = id e numero de colunas = 7 (numero de campos bitmap)
-		printf("\nLinhas: %d Colunas %d\n\n", id, 7);
-    int *matriz = (int*) malloc(id * 7 * sizeof(int) );
-    //int *matriz = (int*) calloc(id * 7, sizeof(int) );
-    //printf("\nLinhas: %d Colunas: %d\n\n", id, 7);
-
-
-    if (matriz != NULL) {
-      printf("\nMatriz criada com sucesso!\n\n");
-      //printf("\nPonteiro memoria: %p\n\n", bitsliced);
-      return matriz;
-    } else {//(bitsliced == NULL)
-      printf("\nMemória Insuficiente!\n\n");
-		  return NULL ;
-    }
-	}
-
-	void liberar_matriz(int* matriz, int id){
-
-		int i;
-
-    //printf("0000");
-
-
-		free(matriz);
-	}
-
-  /*for (int i = 0; i < linhas; i++)
-    {
-        free(ptrM[i]);
-    }
-    free(ptrM);*/
-	
-	/*	Alocação de matrizes dinamicamente tem que alocar um vetor de vetores dinamicamente (linhas), depois para cada elemento do vetor primário, alocar dinamicamente as colunas
-
-		Int **var = (int**) malloc(10 * sizeof(int*));
-		For(i=0; i<10; i++){
-			var[i] = (int*) malloc(8 * sizeof(int));
-		}
-
-		Faz-se uma matriz 10x8
-		Para liberar uma matriz tem que ser ao contrário
-
-		For(i=0; i<10; i++){
-			Free(var[i]);
-		}
-		Free(var);
-	
-	
-	void idade_slice(int** bitsliced){
-		int i, j;
-
-		FILE *dados;
-
-		char auxc = 'a', codigo, sexo;
-		char *nome;
-		int cont = 0, idade, id;
-		
-		dados = fopen("dados.txt", "r");
-			while(auxc != EOF){
-				auxc = fgetc(dados);
-				//printf("\nauxc = %c", auxc);
-				if(auxc == '\n')
-					cont++;
-			}
-		fclose(dados);
-
-		//	fseek(dados, 0, SEEK_SET);
-		//	rewind(dados);
-
-		dados = fopen("dados.txt", "r");
-			for(i=0; i<cont; i++){
-
-				
-				fscanf(dados, " %s %c %d %c %d", nome, &sexo, &idade, &codigo, &id);
-							//printf("\nauxc = %c", auxc);
-							//printf("\nId: %d", id);
-							//printf("\nNome: %s", nome);
-							//printf("\nSexo: %c", sexo);
-							//printf("\nIdade: %d", idade);
-							//printf("\nCódigo: %c\n\n", codigo);
-							
-
-				for(j=6; j>=0; j--){
-					//printf("\nidade = %d", idade);
-					bitsliced[i][j] = idade%2;
-					if(idade != 1)
-						idade = idade/2;
-					else
-						idade = 0;
-				}
-
-				auxc = fgetc(dados);
-			}
-		fclose(dados);
-
-	}
-	void imprime_bitsliced(int** bitsliced){
-		int i, j;
-
-		FILE *dados;
-
-		char auxc = 'a', *nome, codigo, sexo;
-		int cont = 0, idade, id;
-		
-
-		dados = fopen("dados.txt", "r");
-			while(auxc != EOF){
-				auxc = fgetc(dados);
-				if(auxc == '\n')
-					cont++;
-			}
-			rewind(dados);
-			for(i=0; i<cont; i++){
-
-				fscanf(dados, " %s %c %d %c %d", nome, &sexo, &idade, &codigo, &id);
-
-				if(idade < 10)
-					printf("\n%d   = ", idade);
-				else
-					if(idade < 100)
-						printf("\n%d  = ", idade);
-					else
-						printf("\n%d = ", idade);
-				for(j=0; j<7; j++){
-					printf("%d ", bitsliced[i][j]);
-				}
-
-
-				auxc = fgetc(dados);
-			}
-		fclose(dados);
-
-	}
+matriz[i*7] = sexo
+matriz[i*7 + 1] = idade < 18
+matriz[i*7 + 2] = idade > 60
+matriz[i*7 + 3] = nacionalidade
+matriz[i*7 + 4] = comprou pacote
+matriz[i*7 + 5] = recebeu promoção 1
+matriz[i*7 + 6] = promoção especial disponível
 */
 
-void preenche_matriz(int* matriz){
+//--------------------------------------------------------------------------//
+// Função para criar a matriz
+bool* criar_bitmap(int id){
+	int i, j;
+
+	//Matriz de numero de linhas = id e numero de colunas = 5 (numero de campos bitmap)
+	//printf("\nLinhas: %d\nColunas: %d\n\n", id, 7);
+  bool *matriz = (bool*) malloc(id * 5 * sizeof(bool) );
+
+  if (matriz != NULL) {
+    //printf("\nMatriz criada com sucesso!\n\n");
+    //printf("\nPonteiro memoria: %p\n\n", bitsliced);
+    return matriz;
+  } else {//(bitsliced == NULL)
+    printf("\nMemória Insuficiente!\n\n");
+	  return NULL ;
+  }
+}
+
+//--------------------------------------------------------------------------//
+// Função para liberar a memória da matriz
+void liberar_bitmap(bool* matriz){
+	free(matriz);
+  matriz = NULL;
+}
+
+//--------------------------------------------------------------------------//
+// Função para preencher a matriz
+void preenche_bitmap(bool* matriz){
   int i, cont;
 	char nome[30], sexo, nacion, comprou, auxc;
 	int idade, id;
@@ -363,6 +51,7 @@ void preenche_matriz(int* matriz){
   auxc = 'a';
   cont = 0;
   dados = fopen("dados.txt", "r");
+		//pega quantos dados estão no arquivo
     while(auxc != EOF){
       auxc = fgetc(dados);
       if(auxc == '\n')
@@ -371,117 +60,270 @@ void preenche_matriz(int* matriz){
     rewind(dados);
     for(i=0; i<cont; i++){
       fscanf(dados, " %s %c %d %c %c %d", nome, &sexo, &idade, &nacion, &comprou, &id);
-      printf("\nId: %d", id);
-      printf("\nNome: %s", nome);
-      printf("\nSexo: %c", sexo);
-      printf("\nIdade: %d", idade);
-      printf("\nNacionalidade: %c", nacion);
-      printf("\nComprou pacote? %c\n\n", comprou);
 
-      // Preenche o campo de sexo da linha, Feminino = 1, Masculino = 0//
+      // Preenche o campo de sexo da linha, Feminino = 1, Masculino = 0
       if(sexo == 'F')
-          matriz[i*7] = 1;
+          matriz[i*5] = 1;
       else
-          matriz[i*7] = 0;
+          matriz[i*5] = 0;
       //--------------------------------------------------------------//
 
-      // Preenche o campo de idade <18 da linha, idade esta subdividida em 3 faixas, logo usam-se 2 arrays de indices bitmap para salvar as categorias
-      // Caso idade for < 18, campo do primeiro array é 1 e campo do segundo array é 0
-      // Caso idade estiver entre 18 e 60 anos, ambos os campos são 0
-      // Caso idade for > 60, campo do primeiro array é 0 e campo do segundo array é 1
+      /*
+			. Preenche o campo de idade <18 da linha, idade esta subdividida em 3 faixas, logo usam-se 2 arrays de indices bitmap para salvar as categorias
+      . Caso idade for < 18, campo do primeiro array é 1 e campo do segundo array é 0
+      . Caso idade estiver entre 18 e 60 anos, ambos os campos são 0
+      . Caso idade for > 60, campo do primeiro array é 0 e campo do segundo array é 1
+			*/
 
-      //Campo no primeiro array//
+      //Campo no primeiro array
       if(idade < 18)
-          matriz[i*7 + 1] = 1;
+          matriz[i*5 + 1] = 1;
       else
-          matriz[i*7 + 1] = 0;
+          matriz[i*5 + 1] = 0;
       //---------------------//
 
-      //Campo no segundo array//
+      //Campo no segundo array
       if(idade > 60)
-          matriz[i*7 + 2] = 1;
+          matriz[i*5 + 2] = 1;
       else
-          matriz[i*7 + 2] = 0;
+          matriz[i*5 + 2] = 0;
       //---------------------//
 
 
 
 
-      // Preenche o campo de nacionalidade da linha, Nativo = 1, Estrangeiro = 0 //
+      // Preenche o campo de nacionalidade da linha, Nativo = 1, Estrangeiro = 0
       if(nacion == 'N')
-          matriz[i*7 + 3] = 1;
+          matriz[i*5 + 3] = 1;
       else
-          matriz[i*7 + 3] = 0;
+          matriz[i*5 + 3] = 0;
       //------------------------------------------------------------------------//
 
 
-      // Preenche o campo que indica se o aluno comprou pacote de intercambio, caso tenha comprado, 1, caso nao tenha comprado, 0//
+      // Preenche o campo que indica se o aluno comprou pacote de intercambio, caso tenha comprado, 1, caso nao tenha comprado, 0
       if(comprou == 'S')
-          matriz[i*7 + 4] = 1;
+          matriz[i*5 + 4] = 1;
       else
-          matriz[i*7 + 4] = 0;
-      //-------------------------------------------------------------------------------------------------------------------------//
+          matriz[i*5 + 4] = 0;
+      //------------------------------------------------------------------------//
 
-      // Verifica se o aluno tem direito a uma promocao, que tem condicao do aluno ser menor de 18 anos ou maior de 60.//
-      // Caso tenha direito a promocao, campo = 1, caso nao, campo = 0//
-      if(idade < 18 || idade > 60)
-          matriz[i*7 + 5] = 1;
-      else
-          matriz[i*7 + 5] = 0;
-      //------------------------------------------------------------------------------------------------------------------------//
-
-      // Verifica se o aluno tem direito a uma promocao especial para estrangeiros maiores de idade.//
-      // Caso tenha direito a promocao, campo = 1, caso nao, campo = 0//
-      if(idade > 18 && nacion == 'E' && comprou == 'N')
-          matriz[i*7 + 6] = 1;
-      else
-          matriz[i*7 + 6] = 0;
-      //-------------------------------------------------------------------------------------------//
     }
   fclose(dados);
-  blaus(matriz);
+
 }
 
 
-// Função para imprimir o bitmap
-void blaus(int* matriz){
-	int i, j;
+//--------------------------------------------------------------------------//
+// Função para imprimir a matriz
+void imprime_bitmap(int* matriz){
+	int i;
 
-	// for(i=0; i<lim; i++){
-	// 	printf("%d ", bitmap[i]);
-	// }
+	FILE *dados;  
+  char auxc = 'a';
+  int cont = 0;
+  dados = fopen("dados.txt", "r");
+		//pega quantos dados estão no arquivo
+    while(auxc != EOF){
+      auxc = fgetc(dados);
+      if(auxc == '\n')
+        cont++;
+    }
+	fclose(dados);
 
-  printf("\n	Sexo	|  <18	|  >60	|Nacionalidade|	Pacote	|	Promo1  |	Promo2\n\n");
-  for (i=0; i<10; i++){
-    printf("	%d	    |	%d	|	%d	|   	%d    | 	  %d   	|   	%d	 |   	%d\n", matriz[(i*7)], matriz[(i*7)+1], matriz[(i*7)+2], matriz[(i*7)+3], matriz[(i*7)+4], matriz[(i*7)+5], matriz[(i*7)+6]);
+  printf("\n  Sexo | <18 | >60 |  Nacion |  Pacote\n\n");
+  for (i=0; i<cont; i++){
+    printf("   %d   |  %d  |  %d  |    %d    |    %d\n", matriz[(i*5)], matriz[(i*5)+1], matriz[(i*5)+2], matriz[(i*5)+3], matriz[(i*5)+4]);
   }
 }
 
-int consulta_bitmap(int* matriz) {
-	int *vetor = (int*) malloc(sizeof(int) * 7);
-	int opcao;
+//--------------------------------------------------------------------------//
+// Função para consultar os dados
+void consultar (int* matriz, int codigo){
+	int i;
+	//as variáveis são apenas "resposta 1" e "resposta 2" para não ficar muitas variáveis atoa
+	int res1 = 0, res2 = 0;
 
-	printf("\n\n-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
-	printf("             Busca de Dados\n");
-	printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
-	printf("1 - Quantos compraram o Pacote e são Estrangeiros:\n");
-	printf("2 - Quantos compraram o pacote e são Brasileiros:\n");
-	printf("3 - Quantos tiveram a promoção 1 ou 2:\n");
-	printf("4 - Quantos tiveram a promoção 1 e 2:\n");
-	printf("5 - Sair da busca:\n");
-	scanf(" %d", &opcao);
-	
-	do {
-		switch (opcao)
-		{
-		case 1:
-			
+	FILE *dados;  
+  char auxc = 'a';
+  int cont = 0;
+  dados = fopen("dados.txt", "r");
+		//pega quantos dados estão no arquivo
+    while(auxc != EOF){
+      auxc = fgetc(dados);
+      if(auxc == '\n')
+        cont++;
+    }
+	fclose(dados);
+
+	if(matriz == NULL){
+		printf("A matriz não foi criada!\n\n");
+		return;
+	}
+
+	/*
+	matriz[i*7] = sexo
+	matriz[i*7 + 1] = idade < 18
+	matriz[i*7 + 2] = idade > 60
+	matriz[i*7 + 3] = nacionalidade
+	matriz[i*7 + 4] = comprou pacote
+	matriz[i*7 + 5] = recebeu promoção 1
+	matriz[i*7 + 6] = promoção especial disponível
+	*/
+
+	switch(codigo){
+		case 1: //quantos clientes homens e quantas clientes mulheres
+
+			for(i=0; i<cont; i++){
+				//printf("\n\n elemento = %d,,  %d", matriz[(i*7)], i*7);
+				if (matriz[(i*5)] == 1)
+					res1++; //mulher
+				else
+					res2++; //homem
+			}
+
+			printf("\nExistem %d mulheres e %d homens.\n\n", res1, res2);
 			break;
-		
+		case 2: //quantos clientes (estrangeiros ou nativos) compraram o pacote
+
+			for(i=0; i<cont; i++){
+				if(matriz[i*5 + 4] == 1){ //se comprou o pacote
+					if(matriz[i*5 + 3] == 1)
+						res1++; //nativo
+					else
+						res2++; //estrangeiro
+				}
+
+			}
+			printf("\nDos que compraram pacote de intercâmbio,\n%d são nativos e %d são estrangeiros\n\n", res1, res2);
+			break;
+
+		case 3: //quantos clientes tem direito a promocao 1
+    //(clientes menores de 18 anos ou maiores de 60)
+
+			for(i=0; i<cont; i++){
+				if (matriz[i*5+1] == 1 || matriz[i*5+2] == 1)
+						res1++; //tem direito a promocao 1
+					else
+						res2++; //nao tem direito a promocao 1
+				
+			}
+			printf("\nDireito a promocao 1\n\n");
+
+      printf("\n%d clientes tem direito\n", res1);
+      printf("%d clientes não tem direito\n\n", res2);
+
+			break;
+
+		case 4: //quantos clientes tem direito a promocao especial
+    //(clientes estrangeiros, maiores de idade, que nao tenham comprado pacote de intecambio)
+
+			for(i=0; i<cont; i++){
+				if (matriz[i*5+1] == 0 && matriz[i*5+3] == 0 && matriz[i*5+4] == 0)
+						res1++; //tem direito a promocao especial
+					else
+						res2++; //nao tem direito a promocao especial
+
+			}
+			printf("\nDireito a promocao especial\n\n");
+
+      printf("\n%d clientes tem direito\n", res1);
+      printf("%d clientes não tem direito\n\n", res2);
+			break;
+
+    // case 5: //quantos clientes sao menores de 18 ou maiores de 60 anos de idade
+    
+		// 	for(i=0; i<cont; i++){
+		// 		if (matriz[i*5+1] == 1 || matriz[i*5+2] == 1 )
+		// 				res1++; //Se coluna (idade < 18) for 1
+    //                 //Ou se idade >60 for 1
+		// 			else
+		// 				res2++; //nao se inclui nesta categoria
+
+		// 	}
+		// 	printf("\nClientes com menos de 18 ou mais de 60 anos\n\n");
+
+    //   printf("\n%d clientes se enquadram na condicao\n", res1);
+    //   printf("%d clientes não se enquadram na condicao\n\n", res2);
+		// 	break;
+
 		default:
 			break;
-		}
-	} while (opcao != 4);
+	}
+}
+
+
+void consulta_bitmap(int* matriz, int id) {
+	int *vetor = (int*) malloc(sizeof(int) * 5);
+	char sexo, nacionalidade, pacote, menos18, mais60;
+	int cont = 0;
+  
+  if(matriz == NULL){
+		printf("O Bitmap não foi criado!\n\n");
+		return;
+	}
+
+	printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+	printf("             Busca de Dados\n");
+	printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
+
+	//Recebe os dados de busca e armazena em um vetor
+	do {
+		printf("Sexo [M/F]: ");
+		scanf(" %c", &sexo);
+	} while (sexo != 'M' && sexo != 'F' && sexo != 'm' && sexo != 'f');
+	if (sexo == 'F' || sexo == 'f') {
+		vetor[0] = 1;
+	} else {
+		vetor[0] = 0;
+	}
+	do {
+		printf("Menos de 18 anos? (S/N)");
+    scanf(" %c", &menos18);
+  } while (menos18 != 'S' && menos18 != 'N' && menos18 != 's' && menos18 != 'n');
+  if (menos18 != 'S' || menos18 != 's' ) {
+    do {
+      printf("Mais de 60 anos? (S/N)");
+      scanf(" %c", &mais60);
+    } while (mais60 != 'S' && mais60 != 'N' && mais60 != 's' && mais60 != 'n');
+  }
+	if (menos18 == 'S' || menos18 == 's') {
+		vetor[1] = 1;
+		vetor[2] = 0;
+	} else if (mais60 == 'S' || mais60 == 's') {
+		vetor[1] = 0;
+		vetor[2] = 1;
+	} else {
+		vetor[1] = 0;
+		vetor[2] = 0;
+	}
+	do {
+		printf("Nacionalidade (Estrangeiro/Nativo)");
+    printf("Informe [E/N]: ");
+		scanf(" %c", &nacionalidade);
+	} while (nacionalidade != 'E' && nacionalidade != 'N' && nacionalidade != 'e' && nacionalidade != 'n');
+	if (nacionalidade == 'N' || nacionalidade == 'n') {
+		vetor[3] = 1;
+	} else {
+		vetor[3] = 0;
+	}
+	do {
+		printf("Pacote [S/N]: ");
+		scanf(" %c", &pacote);
+	} while (pacote != 'S' && pacote != 'N' && pacote != 's' && pacote != 'n');
+	if (pacote == 'S' || pacote == 's') {
+		vetor[4] = 1;
+	} else {
+		vetor[4] = 0;
+	}
+
+  //Procura dados iguais aos informados
+  for (int i = 0; i < id; i++) {
+    if (vetor[0] == matriz[(i*5)] && vetor[1] == matriz[(i*5)+1] && vetor[2] == matriz[(i*5)+2] && vetor[3] == matriz[(i*5)+3] && vetor[4] == matriz[(i*5)+4]) {
+      cont++;
+    }
+  }
+
+  printf("\nFoi/foram encontrado(s) %d registro(s) relacionado(s) aos dados informados\n\n", cont);
 	
 	free(vetor);
 }

@@ -16,12 +16,15 @@ int criar_dado(struct aluno *dado) {
 int main(void) {
   Lista *li = NULL;
   Lista *li2 = NULL;
+  Lista *copia = NULL;
   int opcao, ok, pos, lista2;
   struct aluno dado;
 
   do
   {
-    printf("\n\nMenu de opções");
+    printf("\n-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+    printf("               Menu de Opções\n");
+    printf("-=-=-=-=-=-=-=-=-=-=-=--=-=-=-=-=-=-=-=-=-=-=-=-=-\n\n");
     printf("\n1 - Criar lista");
     printf("\n2 - Liberar lista");
     printf("\n3 - Inserir elemento no início");
@@ -47,6 +50,7 @@ int main(void) {
     switch(opcao){
 
       case 1:
+        system("clear");
         if (lista2 == 1) {
           li2 = criar_lista();
 
@@ -70,7 +74,8 @@ int main(void) {
 
       case 2:
         // liberar lista
-        if (lista2 = 1) {
+        system("clear");
+        if (lista2 == 1) {
           ok = liberar_lista(li2);
         } else {
           ok = liberar_lista(li);
@@ -85,8 +90,9 @@ int main(void) {
 
       case 3:
         // inserir elemento no início
+        system("clear");
         ok = criar_dado(&dado);
-        if (lista2 = 1) {
+        if (lista2 == 1) {
           ok = inserir_lista_inicio(li2, dado);
         } else {
           ok = inserir_lista_inicio(li, dado);
@@ -102,6 +108,7 @@ int main(void) {
 
       case 4:
         // inserir elemento no final
+        system("clear");
         ok = criar_dado(&dado);
         if (lista2 == 1) {
           ok = inserir_lista_final(li2, dado);
@@ -119,6 +126,7 @@ int main(void) {
 
       case 5:
         // inserir elemento de forma ordenada
+        system("clear");
         ok = criar_dado(&dado);
         if (lista2 == 1) {
           ok = inserir_lista_ordenada(li2, dado);
@@ -136,6 +144,7 @@ int main(void) {
 
       case 6:
         // remover elemento do início
+        system("clear");
         if (lista2 == 1) {
           ok = remover_lista_inicio(li2);
         } else {
@@ -151,6 +160,7 @@ int main(void) {
 
       case 7:
         // remover elemento do final
+        system("clear");
         if (lista2 == 1) {
           ok = remover_lista_final(li2);
         } else {
@@ -166,8 +176,14 @@ int main(void) {
 
       case 8:
         // remover elemento do meio
-        printf("\n Número a ser removido: ");
-        scanf("%d", &dado);
+        system("clear");
+        printf("\n Dado a ser removido: \n");
+        printf("Matrícula: ");
+        scanf("%d", &dado.matricula);
+        printf("Nome: ");
+        scanf("%s", &dado.nome);
+        printf("Nota: ");
+        scanf("%f", &dado.nota);
 
         if (lista2 == 1) {
           ok = remover_lista_meio(li2, dado);
@@ -184,6 +200,7 @@ int main(void) {
 
       case 9:
         // busca elemento pela posicao
+        system("clear");
         printf("\n Posição do elemento a ser buscado: ");
         scanf("%d", &pos);
 
@@ -196,7 +213,9 @@ int main(void) {
         if(ok){
           printf("\n Busca realizada com sucesso!");
           printf("\n Elemento da %dª posição: ", pos);
-          printf("%d", dado);
+          printf("\n Matrícula: %d\n", dado.matricula);
+          printf(" Nome: %s\n", dado.nome);
+          printf(" Nota: %.2f\n\n", dado.nota);
         }else{
           printf("\n Posição não existe!");
         }
@@ -205,8 +224,13 @@ int main(void) {
 
       case 10:
         // busca elemento pelo dado
-        printf("\n Código do produto a ser buscado: ");
-        scanf("%d", &dado);
+        system("clear");
+        printf("\nMatrícula: ");
+        scanf("%d", &dado.matricula);
+        printf("Nome: ");
+        scanf(" %s", &dado.nome);
+        printf("Nota: ");
+        scanf(" %f", &dado.nota);
 
         if (lista2 == 1) {
           ok = buscar_lista_dado(li2, dado, &pos);
@@ -217,7 +241,9 @@ int main(void) {
         if(ok){
           printf("\n Busca realizada com sucesso!");
           printf("\n Elemento da %dª posição: ", pos);
-          printf("%d", dado);
+          printf("\n Matrícula: %d\n", dado.matricula);
+          printf(" Nome: %s\n", dado.nome);
+          printf(" Nota: %.2f\n\n", dado.nota);
         }else{
           printf("\n Elemento não encontrado!");
         }
@@ -226,8 +252,9 @@ int main(void) {
 
       case 11:
         // concatena duas listas
+        system("clear");
         if (lista2 != 1) {
-          printf("\nNão é possivel concatenar!");
+          printf("\nNão é possível concatenar!");
           printf("\nCrie outra lista");
         } else {
           li2 = concatena_lista(li, li2);
@@ -236,23 +263,26 @@ int main(void) {
         break;
 
       case 12:
-      // copia e excluindo os repetidos
+          // copia e excluindo os repetidos
+          system("clear");
           if (lista2 == 1) {
-            liberar_lista(li);
-            li = criar_lista();
-            li = copia_lista(li2);
-            printf("Os itens copiados para lista 1 foram: ");
-            imprimir_lista(li);
+            copia = criar_lista();
+            copia = copia_lista(li2);
+            
           } else {
-            li2 = criar_lista();
-            li2 = copia_lista(li);
-            printf("Os itens copiados lista 2 foram: ");
-            imprimir_lista(li2);
+            copia = criar_lista();
+            copia = copia_lista(li);
           }
+          printf("\nOs itens copiados para lista 3 foram: \n\n");
+          imprimir_lista(copia);
+          printf("\nVocê não possui acesso a essa lista\n\n");
+          liberar_lista(copia);
           
           break;
           
       case 13:
+        //Inverte Lista
+        system("clear");
         if (lista2 == 1) {
           li2 = inverte_lista(li2);
           printf("\nLista invertida!");
@@ -264,6 +294,7 @@ int main(void) {
       
       case 14:
           // indica se a lista está em ordem
+          system("clear");
           if (lista2 == 1) {
             ok = verifica_ordem(li2);
             if (ok == 1) {
@@ -287,6 +318,7 @@ int main(void) {
 
       case 15:
         // retorna o tamanho da lista
+        system("clear");
         if (lista2 == 1) {
           printf("\nA lista possui tamanho %d\n\n", calcula_tamanho(li2));
         } else {
@@ -295,12 +327,14 @@ int main(void) {
         break;
 
       case 16:
+        system("clear");
         lista2 = 1;
         printf("\n\nAgora você não pode modificar a lista 1");
           break;
 
       case 17:
         // imprime a lista
+        system("clear");
         printf("\n Lista encadeada: ");
         if (lista2 == 1) {
           ok = imprimir_lista(li2);
@@ -315,6 +349,7 @@ int main(void) {
       
       case 18:
         // libera memória e finaliza programa
+        system("clear");
         liberar_lista(li2);
         liberar_lista(li);
 
