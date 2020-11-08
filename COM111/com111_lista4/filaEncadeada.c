@@ -152,19 +152,28 @@ int tamanho_fila(Fila *fi)
     return fi->quant;
 }
 
-void imprime_fila(Fila *fi) {
+void imprime_fila(Fila *fi, int tipo) {
   int qtd;
   Elemento *no;
   no = criar_elemento();
   no = fi->inicio;
 
-  printf("\n\nDados da Fila\n");
+  if (tipo == 1) {
+    printf("\n\nDados da Fila [CP]\n");
+  } else if (tipo == 2) {
+    printf("\n\nDados da Fila [CC]\n");
+  } else if (tipo == 3) {
+    printf("\n\nDados da Fila [NP]\n");
+  } else if (tipo == 4) {
+    printf("\n\nDados da Fila [NC]\n");
+  } else {
+    printf("\n\nDados da Fila\n");
+  }
 
-  while (no->prox != NULL) {
+  while (no != NULL) {
     printf("%d ", no->dado);
     no = no->prox;
   }
-  printf("%d ", no->dado);
   free(no);
 }
 

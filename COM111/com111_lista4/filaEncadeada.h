@@ -18,7 +18,7 @@ int desenfileirar(Fila *fi);
 
 // função para consultar elemento no início da fila
 int consultar_inicio_fila(Fila *fi, int *dado); 
-void imprime_fila(Fila *fi);
+void imprime_fila(Fila *fi, int tipo);
 int verifica_qtd(Fila *fi);
 int verifica_vazia(Fila *fi);
 #endif 

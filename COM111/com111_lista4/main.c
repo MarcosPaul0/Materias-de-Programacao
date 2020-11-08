@@ -52,12 +52,37 @@ int main(void) {
   }
 
   fi_caixa_con = criar_fila();
+  if (fi_caixa_con != NULL) {
+    printf("\n\n Fila caixa convencional, criada com sucesso!\n\n");
+  } else{
+    printf("\n Fila não criada!");
+  }
   fi_caixa_pre = criar_fila();
+  if (fi_caixa_pre != NULL) {
+    printf("\n Fila caixa preferencial, criada com sucesso!\n\n");
+  } else{
+    printf("\n Fila não criada!");
+  }
   fi_negocial_con = criar_fila();
+  if (fi_negocial_con != NULL) {
+    printf("\n Fila negocial convencional, criada com sucesso!\n\n");
+  } else{
+    printf("\n Fila não criada!");
+  }
   fi_negocial_pre = criar_fila();
+  if (fi_negocial_pre != NULL) {
+    printf("\n Fila negocial preferancial, criada com sucesso!\n\n");
+  } else{
+    printf("\n Fila não criada!");
+  }
 
   do
   {
+    printf("\n");
+    printf("\n");
+    system("sleep 04");
+    system("clear");
+
     printf("\n\nMenu de opções");
     printf("\n1 - Caixa");
     printf("\n2 - Negocial");
@@ -71,17 +96,21 @@ int main(void) {
 
     switch(opcao){
 
-      case 1:
+      case 1:  
         opcao = perfil_cliente();
         senha = desenfileirar(fi_senhas);
         if (opcao == 1) {
-          printf("A senha retirada foi [CP%d]", senha);
           ok = enfileirar(fi_caixa_pre, senha);
-          imprime_insercao(ok, fi_caixa_pre);
+          if (ok == 1) {
+            printf("\n\nA senha retirada foi [CP%d]\n", senha);
+          }
+          imprime_fila(fi_caixa_pre, 1);
         } else {
-          printf("A senha retirada foi [CC%d]", senha);
           ok = enfileirar(fi_caixa_con, senha);
-          imprime_insercao(ok, fi_caixa_con);
+          if (ok == 1) {
+            printf("\n\nA senha retirada foi [CC%d]\n", senha);
+          }
+          imprime_fila(fi_caixa_con, 2);
         }
         break;
 
@@ -90,13 +119,17 @@ int main(void) {
         opcao = perfil_cliente();
         senha = desenfileirar(fi_senhas);
         if (opcao == 1) {
-          printf("A senha retirada foi [NP%d]", senha);
           ok = enfileirar(fi_negocial_pre, senha);
-          imprime_insercao(ok, fi_negocial_pre);
+          if (ok == 1) {
+            printf("\n\nA senha retirada foi [NP%d]\n", senha);
+          }
+          imprime_fila(fi_negocial_pre, 3);
         } else {
-          printf("A senha retirada foi [NC%d]", senha);
           ok = enfileirar(fi_negocial_con, senha);
-          imprime_insercao(ok, fi_negocial_con);
+          if (ok == 1) {
+            printf("\n\nA senha retirada foi [NC%d]\n", senha);
+          }
+          imprime_fila(fi_negocial_con, 4);
         }
         break;
 
@@ -121,6 +154,10 @@ int main(void) {
   cont_mesa2 = tamanho_fila(fi_caixa_con);
   cont_mesa3 = tamanho_fila(fi_negocial_pre);
   cont_mesa4 = tamanho_fila(fi_negocial_con);
+
+  system("sleep 03");
+  system("clear");
+
   //Menu para chamada de senha
   do {
     do {
@@ -183,6 +220,9 @@ int main(void) {
 
   } while(opcao != 3);
 
+  system("sleep 03");
+  printf("\n");
+  system("clear");
 
   printf("\n\nA mesa 1 atendeu %d clientes", cont_mesa1);
   printf("\nA mesa 2 atendeu %d clientes", cont_mesa2);
@@ -218,7 +258,7 @@ int solicitar_limite() {
 
 void imprime_insercao(int ok, Fila *fi) {
   if(ok == 1){
-    imprime_fila(fi);
+    imprime_fila(fi, 0);
   }else{
     printf("\n Falha na inserção!");
   }
