@@ -132,6 +132,7 @@ int consultar_topo_pilha(Pilha *pi, char *dado){
 
   // verifica se a pilha foi criada corretamente e se não está vazia
   if(pi == NULL || pi->inicio == NULL){
+    *dado = NULL;
     return 0;
   }
 
@@ -151,67 +152,88 @@ int tamanho_pilha(Pilha *pi){
     return pi->quant;
 }
 
-void imprime_pilha(Pilha *pi, Pilha *pi1, Pilha *pi2) {
-  Elemento *no;
-  no = criar_elemento();
+void passa_pilha(Pilha *pi, Pilha *pi_aux) {
+  Elemento *no = criar_elemento();
   no = pi->inicio;
-  Elemento *no1;
-  no1 = criar_elemento();
-  no1 = pi1->inicio;
-  Elemento *no2;
-  no2 = criar_elemento();
-  no2 = pi2->inicio;
 
-  printf("\n\n\n");
+  while(no != NULL) {
+    empilhar(pi_aux, no->dado);
+    no = no->prox;
+  }
+
+  free(no);
+}
+
+void imprime_pilha(Pilha *pi, Pilha *pi1, Pilha *pi2) {
+  Pilha *pi_aux = criar_pilha();
+  passa_pilha(pi, pi_aux);
+  Pilha *pi1_aux = criar_pilha();
+  passa_pilha(pi1, pi1_aux);
+  Pilha *pi2_aux = criar_pilha();
+  passa_pilha(pi2, pi2_aux);
+
+  Elemento *no_aux = criar_elemento();
+  no_aux = pi_aux->inicio;
+  Elemento *no1_aux = criar_elemento();
+  no1_aux = pi1_aux->inicio;
+  Elemento *no2_aux = criar_elemento();
+  no2_aux = pi2_aux->inicio;
+
+  printf("\n\n\n\n");
+  printf("        Tubo 1      Tubo 2      Tubo 3\n\n");
   for (int i = 0; i < 5; i++) {
     //Imprime pilha 1
-    if (no == NULL) {
-      printf("    | |");
+    if (no_aux == NULL) {
+      printf("         | |");
     } else {
-      printf("    |%c|", no->dado);
+      printf("         |%c|", no_aux->dado);
     }
     //Imprime pilha 2
-    if (no1 == NULL) {
-      printf("    | |");
+    if (no1_aux == NULL) {
+      printf("         | |");
     } else {
-      printf("    |%c|", no1->dado);
+      printf("         |%c|", no1_aux->dado);
     }
     //Imprime pilha 3
-    if (no2 == NULL) {
-      printf("    | |");
+    if (no2_aux == NULL) {
+      printf("         | |");
     } else {
-      printf("    |%c|", no2->dado);
+      printf("         |%c|", no2_aux->dado);
     }
     printf("\n");
     //Pega o proximo valor da pilha 1
-    if (no == NULL) {
+    if (no_aux == NULL) {
 
-    } else if (no->prox == NULL) {
-      no = NULL;
+    } else if (no_aux->prox == NULL) {
+      no_aux = NULL;
     } else {
-      no = no->prox;
+      no_aux = no_aux->prox;
     }
     //Pega o proximo valor da pilha 2
-    if (no1 == NULL) {
+    if (no1_aux == NULL) {
       
-    } else if (no1->prox == NULL) {
-      no1 = NULL;
+    } else if (no1_aux->prox == NULL) {
+      no1_aux = NULL;
     } else {
-      no1 = no1->prox;
+      no1_aux = no1_aux->prox;
     }
     //Pega o proximo valor da pilha 3
-    if (no2 == NULL) {
+    if (no2_aux == NULL) {
       
-    } else if (no2->prox == NULL) {
-      no2 = NULL;
+    } else if (no2_aux->prox == NULL) {
+      no2_aux = NULL;
     } else {
-      no2 = no2->prox;
+      no2_aux = no2_aux->prox;
     }
   }
+  printf("         / /         / /         / /");
+  liberar_pilha(pi_aux);
+  liberar_pilha(pi1_aux);
+  liberar_pilha(pi2_aux);
 }
 
 int verifica_alfa(Pilha *pi) {
-  char ordem[5] = "UOIEA";
+  char ordem[5] = "AEIOU";
   char atual[5];
   char aux;
   int i = 0;

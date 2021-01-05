@@ -16,6 +16,7 @@ char desempilhar(Pilha *pi);
 
 // função para consultar elemento no topo da pilha
 int consultar_topo_pilha(Pilha *pi, char *dado);
+void passa_pilha(Pilha *pi, Pilha *pi_aux);
 void imprime_pilha(Pilha *pi, Pilha *pi1, Pilha *pi2);
 int verifica_alfa(Pilha *pi);
 

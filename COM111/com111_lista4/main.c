@@ -53,7 +53,7 @@ int main(void) {
 
   fi_caixa_con = criar_fila();
   if (fi_caixa_con != NULL) {
-    printf("\n\n Fila caixa convencional, criada com sucesso!\n\n");
+    printf("\n\n\n Fila caixa convencional, criada com sucesso!\n\n");
   } else{
     printf("\n Fila não criada!");
   }
@@ -76,13 +76,13 @@ int main(void) {
     printf("\n Fila não criada!");
   }
 
+  printf("\n");
+  printf("\n");
+  system("sleep 04");
+  system("clear");
+  
   do
   {
-    printf("\n");
-    printf("\n");
-    system("sleep 04");
-    system("clear");
-
     printf("\n\nMenu de opções");
     printf("\n1 - Caixa");
     printf("\n2 - Negocial");
@@ -154,7 +154,9 @@ int main(void) {
   cont_mesa2 = tamanho_fila(fi_caixa_con);
   cont_mesa3 = tamanho_fila(fi_negocial_pre);
   cont_mesa4 = tamanho_fila(fi_negocial_con);
-
+  
+  printf("\n");
+  printf("\n");
   system("sleep 03");
   system("clear");
 
@@ -224,11 +226,11 @@ int main(void) {
   printf("\n");
   system("clear");
 
+  printf("\n\n\nServiço Concluído!");
   printf("\n\nA mesa 1 atendeu %d clientes", cont_mesa1);
   printf("\nA mesa 2 atendeu %d clientes", cont_mesa2);
   printf("\nA mesa 3 atendeu %d clientes", cont_mesa3);
   printf("\nA mesa 4 atendeu %d clientes", cont_mesa4);
-  printf("\n\n\nServiço Concluído");
 
   return 0;
 }
