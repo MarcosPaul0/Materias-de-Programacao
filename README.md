@@ -1,5 +1,6 @@
 # Matérias de Programação
 ### Repositório com exercícios da matérias relacionadas à Programação.
 
-COM110 - Fundamentos de Programação
-COM111 - Algorítimos e Estrutura de Dados I
+_COM110_ - Fundamentos de Programação
+
+_COM111_ - Algorítimos e Estrutura de Dados I
