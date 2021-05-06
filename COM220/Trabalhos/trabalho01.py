@@ -40,21 +40,21 @@ def bubbleSort(array):
 bubbleArray = []
 quickArray = []
 
+#Insere os números aleatórios nos arrays
 for x in range(0, 10000):
     number = randint(1, 100000)
     bubbleArray.append(number)
     quickArray.append(number)
-#Insere os números aleatórios nos arrays
 
+#Guarda os tempos de antes e depois do bubblesort
 bubbleStart = time()
 bubbleSort(bubbleArray) #Bubblesort do array
 bubbleEnd = time()
-#Guarda os tempos de antes e depois do bubblesort
 
+#Guarda os tempo de antes e depois do quicksort 
 quickStart = time()
 quickSort(quickArray, 0, len(quickArray) - 1) #Quicksort do array
 quickEnd = time()
-#Guarda os tempo de antes e depois do quicksort 
-print(bubbleArray)
-print('O tempo de execução do método Bubblesort é {:.2f} segundos'.format(bubbleEnd - bubbleStart))
-print('O tempo de execução do método Quicksort é {:.2f} segundos'.format(quickEnd - quickStart))
+
+print('O tempo de execução do método Bubblesort é {:.2f} segundos'.format((bubbleEnd - bubbleStart) * 1000))
+print('O tempo de execução do método Quicksort é {:.2f} segundos'.format((quickEnd - quickStart) * 1000))
