@@ -56,5 +56,5 @@ quickStart = time()
 quickSort(quickArray, 0, len(quickArray) - 1) #Quicksort do array
 quickEnd = time()
 
-print('O tempo de execução do método Bubblesort é {:.2f} segundos'.format((bubbleEnd - bubbleStart) * 1000))
-print('O tempo de execução do método Quicksort é {:.2f} segundos'.format((quickEnd - quickStart) * 1000))
+print('O tempo de execução do método Bubblesort é {:.0f} milisegundos'.format(float(bubbleEnd - bubbleStart) * 1000))
+print('O tempo de execução do método Quicksort é {:.0f} milisegundos'.format(float(quickEnd - quickStart) * 1000))
