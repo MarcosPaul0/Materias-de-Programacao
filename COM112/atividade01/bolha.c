@@ -1,5 +1,6 @@
-#include <stdio.h>
 #include <stdlib.h>
+#include <stdio.h>
+#include <time.h>
 
 #include "bolha.h"
 
@@ -8,6 +9,8 @@ void geraNumerosAleatorios(int qtNumeros, char nomeArquivo[]) {
   int num;
   char strNum[3];
   pa = fopen(nomeArquivo, "w");
+  
+  srand(time(NULL));
 
   for(int i = 0; i < qtNumeros; i++) {
     num = (rand() % 500) + 1;
@@ -19,11 +22,11 @@ void geraNumerosAleatorios(int qtNumeros, char nomeArquivo[]) {
 
 void carregaVetor(int vet[], int tam, char nomeArquivo[]) {
   FILE *pa;
-  char strNum[4];
+  char strNum[tam];
   pa = fopen(nomeArquivo, "r");
 
   for(int i = 0; i < tam; i++) {
-    fgets(strNum, 10, pa);
+    fgets(strNum, tam, pa);
     vet[i] = atoi(strNum);
   }
 
@@ -67,4 +70,5 @@ void imprimeVetor(int vet[], int tam) {
   for(int i = 0; i < tam; i++) {
     printf("%d ", vet[i]);
   }
+  printf("\n");
 }
