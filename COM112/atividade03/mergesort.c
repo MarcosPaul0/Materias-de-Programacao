@@ -51,33 +51,33 @@ void mergeSort(int vet[], int inicio, int fim) {
 }
 
 void merge(int vet[], int inicio, int meio, int fim) {
-    int marcadorV1 = inicio;
-    int marcadorV2 = meio + 1;
+    int marcadorVet1 = inicio;
+    int marcadorVet2 = meio + 1;
     int vetAux[fim - inicio + 1];
     int i = 0;
     int k;
 
-    while(marcadorV1 <= meio && marcadorV2 <= fim) {
-        if(vet[marcadorV1] < vet[marcadorV2]) {
-            vetAux[i] = vet[marcadorV1];
-            marcadorV1++;
+    while(marcadorVet1 <= meio && marcadorVet2 <= fim) {
+        if(vet[marcadorVet1] < vet[marcadorVet2]) {
+            vetAux[i] = vet[marcadorVet1];
+            marcadorVet1++;
         } else {
-            vetAux[i] = vet[marcadorV2];
-            marcadorV2++;
+            vetAux[i] = vet[marcadorVet2];
+            marcadorVet2++;
         }
         i++;
     }
 
-    while(marcadorV1 <= meio) {
-        vetAux[i] = vet[marcadorV1];
+    while(marcadorVet1 <= meio) {
+        vetAux[i] = vet[marcadorVet1];
         i++;
-        marcadorV1++;
+        marcadorVet1++;
     }
 
-    while(marcadorV2 <= fim) {
-        vetAux[i] = vet[marcadorV2];
+    while(marcadorVet2 <= fim) {
+        vetAux[i] = vet[marcadorVet2];
         i++;
-        marcadorV2++;
+        marcadorVet2++;
     }
 
     for(i = inicio; i <= fim; i++) {
