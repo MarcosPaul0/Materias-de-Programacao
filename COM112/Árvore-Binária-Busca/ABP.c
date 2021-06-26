@@ -36,19 +36,15 @@ arvore* criaArvore() {
     return A;
 }
 
-no *retornaRaiz(arvore *A) {
-    return A->sentinela->dir;
-}
-
 void insereNo(arvore *A, int chave) {
     if(A == NULL) {
-        printf("Erro");
+        printf("Árvore não encontrada!");
         exit(0);
     }
 
     no *novo = (no*) malloc(sizeof(no));
     if(novo == NULL) {
-        printf("Erro");
+        printf("Memória não alocada!");
         exit(0);
     }
     novo->chave = chave;
@@ -82,6 +78,11 @@ void insereNo(arvore *A, int chave) {
 }
 
 void insereArquivo(arvore *A, char nomeArquivo[]) {
+    if(A == NULL) {
+        printf("Árvore não encontrada!");
+        exit(0);
+    }
+
     FILE *pa;
     char strNum[10];
     pa = fopen(nomeArquivo, "r");
@@ -95,7 +96,7 @@ void insereArquivo(arvore *A, char nomeArquivo[]) {
 
 void removeNo(arvore *A, int chave) {
     if(A == NULL) {
-        printf("Erro");
+        printf("Árvore não encontrada!");
         exit(0);
     }
 
@@ -110,25 +111,23 @@ void removeNo(arvore *A, int chave) {
         aux->chave = sucessor->chave;
         aux = sucessor;
     }
-    
-    if(aux->esq == NULL &&  aux->dir ==NULL) {
+
+    if(aux->esq == NULL && aux->dir == NULL) {
         if(aux->chave < aux->pai->chave) {
             aux->pai->esq = NULL;
         } else {
             aux->pai->dir = NULL;
         }
         free(aux);
-        return;
-    }
-
-    if(aux->esq != NULL || aux->dir !=NULL) {
+    } else if(aux->esq != NULL || aux->dir !=NULL) {
         if(aux->esq != NULL) {
-            if(aux->chave < aux->pai->chave) {
-                aux->pai->esq = aux->esq;
-            } else {
-                aux->pai->dir = aux->esq;
-            }
-            aux->esq->pai = aux->pai;
+            aux->chave = aux->esq->chave;
+            free(aux->esq);
+            aux->esq = NULL;
+        } else {
+            aux->chave = aux->dir->chave;
+            free(aux->dir);
+            aux->dir = NULL;
         }
     }
 }
@@ -143,9 +142,18 @@ void percorreArvore(no *raiz) {
     percorreArvore(raiz->dir);
 }
 
+no *retornaRaiz(arvore *A) {
+    if(A == NULL) {
+        printf("Árvore não encontrada!");
+        exit(0);
+    }
+
+    return A->sentinela->dir;
+}
+
 no *retornaNo(arvore *A, int chave) {
     if(A == NULL) {
-        printf("Erro!");
+        printf("Árvore não encontrada!");
         exit(0);
     }
 
@@ -166,23 +174,28 @@ no *retornaNo(arvore *A, int chave) {
 }
 
 void imprimeDados(no *elemento) {
-    printf("\nChave: %d", elemento->chave);
+    if(elemento == NULL) {
+        printf("Elemento inválido!");
+        exit(0);
+    }
+
+    printf("Chave:%d", elemento->chave);
 
     if(elemento->esq == NULL) {
-        printf("\nEsq: NULO");
+        printf("\nEsq:NULO");
     } else {
-        printf("\nEsq: %d", elemento->esq->chave);
+        printf("\nEsq:%d", elemento->esq->chave);
     }
 
     if(elemento->dir == NULL) {
-        printf("\nDir: NULO");
+        printf("\nDir:NULO");
     } else {
-        printf("\nDir: %d", elemento->dir->chave);
+        printf("\nDir:%d", elemento->dir->chave);
     }
 
     if(elemento->pai == NULL) {
-        printf("\nPai: NULO");
+        printf("\nPai:NULO");
     } else {
-        printf("\nPai: %d", elemento->pai->chave);
+        printf("\nPai:%d", elemento->pai->chave);
     }
 }
