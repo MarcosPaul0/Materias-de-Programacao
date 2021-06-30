@@ -4,7 +4,6 @@
 typedef struct no no;
 typedef struct arvore arvore;
 
-
 arvore* criaArvore();
 //Cria a estrutura árvore que contém um nó sentinela.
 
@@ -55,7 +54,5 @@ void percorreArvore(no *raiz);
 //5-1
 //10-0 
 //15--1
-
-
 
 #endif //ABP_H
