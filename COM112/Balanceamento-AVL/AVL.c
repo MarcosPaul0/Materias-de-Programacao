@@ -20,20 +20,19 @@ arvore* criaArvore() {
 
     if(A == NULL) {
         printf("Memória não alocada!");
-        return;
+        exit(0);
     }
 
     no *sentinela = (no*) malloc(sizeof(no));
     if(sentinela == NULL) {
         printf("Memória não alocada!");
-        return;
+        exit(0);
     }
 
     sentinela->chave = -1000;
     sentinela->esq = NULL;
     sentinela->dir = NULL;
     sentinela->pai = NULL;
-    sentinela->fb = 0;
     A->sentinela = sentinela;
     return A;
 }
@@ -41,7 +40,7 @@ arvore* criaArvore() {
 no *retornaRaiz(arvore *A) {
     if(A == NULL) {
         printf("Árvore não encontrada!");
-        return;
+        exit(0);
     }
 
     return A->sentinela->dir;
@@ -50,7 +49,7 @@ no *retornaRaiz(arvore *A) {
 no *retornaNo(arvore *A, int chave) {
     if(A == NULL) {
         printf("Árvore não encontrada!");
-        return;
+        exit(0);
     }
 
     no *atual = retornaRaiz(A);
@@ -69,64 +68,23 @@ no *retornaNo(arvore *A, int chave) {
     return atual;
 }
 
-void removeNo(arvore *A, int chave) {
-    if(A == NULL) {
-        printf("Árvore não encontrada!");
-        return;
-    }
-
-    no *aux = retornaNo(A, chave);
-    no *sucessor = NULL;
-
-    if(aux->esq != NULL && aux->dir != NULL) {
-        sucessor = aux->dir;
-        while(sucessor->esq != NULL) {
-            sucessor = sucessor->esq;
-        }
-        aux->chave = sucessor->chave;
-        aux = sucessor;
-    }
-    if(aux->esq == NULL && aux->dir == NULL) {
-        sucessor = aux->pai;
-        if(aux->chave < aux->pai->chave) {
-            aux->pai->esq = NULL;
-        } else {
-            aux->pai->dir = NULL;
-        }
-        free(aux);
-    } else if(aux->esq != NULL || aux->dir !=NULL) {
-        sucessor = aux;
-        if(aux->esq != NULL) {
-            aux->chave = aux->esq->chave;
-            free(aux->esq);
-            aux->esq = NULL;
-        } else {
-            aux->chave = aux->dir->chave;
-            free(aux->dir);
-            aux->dir = NULL;
-        }
-    }
-}
-
 void percorreArvore(no *raiz) {
     if(raiz == NULL) {
         return;
     }
 
+    printf("%d-%d\n", raiz->chave, raiz->fb);
     percorreArvore(raiz->esq);
-    if(raiz != NULL) {
-        printf("%d-%d\n", raiz->chave, raiz->fb);
-    }
     percorreArvore(raiz->dir);
 }
 
 void imprimeDados(no *elemento) {
     if(elemento == NULL) {
         printf("Elemento inválido!");
-        return;
+        exit(0);
     }
 
-    printf("Chave:%d", elemento->chave);
+    printf("\nChave:%d", elemento->chave);
 
     if(elemento->esq == NULL) {
         printf("\nEsq:NULO");
@@ -152,7 +110,7 @@ void rotEsq(no *noDesbalanceado) {
     no *esqFilho = filhoDir->esq;
 
     filhoDir->pai = noDesbalanceado->pai;
-    if(noDesbalanceado->chave < noDesbalanceado->pai->chave) {
+    if(filhoDir->chave < noDesbalanceado->pai->chave) {
         noDesbalanceado->pai->esq = filhoDir;
     } else {
         noDesbalanceado->pai->dir = filhoDir;
@@ -160,14 +118,10 @@ void rotEsq(no *noDesbalanceado) {
 
     filhoDir->esq = noDesbalanceado;
     noDesbalanceado->pai = filhoDir;
+    noDesbalanceado->dir = esqFilho;
     if(esqFilho != NULL) {
-        noDesbalanceado->dir = esqFilho;
         esqFilho->pai = noDesbalanceado;
-    } else {
-        noDesbalanceado->dir = NULL;
     }
-    noDesbalanceado->fb = 0;
-    filhoDir->fb = 0;
 }
 
 void rotDir(no *noDesbalanceado) {
@@ -175,7 +129,7 @@ void rotDir(no *noDesbalanceado) {
     no *dirFilho = filhoEsq->dir;
 
     filhoEsq->pai = noDesbalanceado->pai;
-    if(noDesbalanceado->chave < noDesbalanceado->pai->chave) {
+    if(filhoEsq->chave < noDesbalanceado->pai->chave) {
         noDesbalanceado->pai->esq = filhoEsq;
     } else {
         noDesbalanceado->pai->dir = filhoEsq;
@@ -183,52 +137,78 @@ void rotDir(no *noDesbalanceado) {
 
     filhoEsq->dir = noDesbalanceado;
     noDesbalanceado->pai = filhoEsq;
+    noDesbalanceado->esq = dirFilho;
     if(dirFilho != NULL) {
-        noDesbalanceado->esq = dirFilho;
         dirFilho->pai = noDesbalanceado;
-    } else {
-        noDesbalanceado->esq = NULL;
     }
-    noDesbalanceado->fb = 0;
-    filhoEsq->fb = 0;
 }
 
-void balanceamento_Insercao(no *no) {
+void balanceamento(no *no) {
+    struct no *neto;
     struct no *filho;
-    int fbNeto = 0;
 
-    if(no->fb == 2) {
-        filho = no->dir;
-        if(filho->fb == -1) {
-            fbNeto = filho->esq->fb;
-            rotDir(filho);
-        }
-        rotEsq(no);
-        if(fbNeto == -1) {
-            filho->fb = 1;
-        } else if(fbNeto == 1) {
-            no->fb = -1;
-        }
-    } else {
+    if(no->fb == -2) { //Rotação a direita
         filho = no->esq;
         if(filho->fb == 1) {
-            fbNeto = filho->dir->fb;
+            neto = filho->dir;
             rotEsq(filho);
+            rotDir(no);
+            if(neto->fb == -1) {
+                no->fb = 1;
+                filho->fb = 0;
+                neto->fb = 0;
+            } else {
+                if(neto->fb == 1) {
+                    filho->fb = -1;
+                } else {
+                    filho->fb = 0;
+                }
+                no->fb = 0;
+                neto->fb = 0;
+            }
+        } else {
+            rotDir(no);
+            if(filho->fb == 0) {
+                no->fb = -1;
+                filho->fb = 1;
+            } else {
+                no->fb = 0;
+                filho->fb = 0;
+            }
         }
-        rotDir(no);
-        if(fbNeto == -1) {
-            no->fb = 1;
-        } else if(fbNeto == 1) {
-            filho->fb = -1;
+    } else { //Rotação a esquerda
+        filho = no->dir;
+        if(filho->fb == -1) {
+            neto = filho->esq;
+            rotDir(filho);
+            rotEsq(no);
+            if(neto->fb == -1) {
+                no->fb = 0;
+                filho->fb = 1;
+                neto->fb = 0;
+            } else {
+                if(neto->fb == 1) {
+                    no->fb = -1;
+                } else {
+                    no->fb = 0;
+                }
+                filho->fb = 0;
+                neto->fb = 0;
+            }
+        } else {
+            rotEsq(no);
+            if(filho->fb == 0) {
+                no->fb = 1;
+                filho->fb = -1;
+            } else {
+                no->fb = 0;
+                filho->fb = 0;
+            }
         }
     }
 }
 
 void atualizaFB_Insercao(no *no, arvore *A) {
-    if(no == NULL || A == NULL) {
-        return;
-    }
-
     if(no->pai != A->sentinela) {
         if(no->chave < no->pai->chave) {
             no->pai->fb--;
@@ -248,20 +228,45 @@ void atualizaFB_Insercao(no *no, arvore *A) {
     }
 
     if(no->fb == 2 || no->fb == -2) {
-        balanceamento_Insercao(no);
+        balanceamento(no);
+    }
+}
+
+void atualizaFB_Remocao(no *no, arvore *A) {
+    if(no->chave < no->pai->chave) {
+        no->pai->fb++;
+    } else {
+        no->pai->fb--;
+    }
+    no = no->pai;
+
+    while(no->fb == 0 && no->pai != A->sentinela) {
+        if(no->chave < no->pai->chave) {
+            no->pai->fb++;
+        } else {
+            no->pai->fb--;
+        }
+        no = no->pai;
+    }
+
+    if(no->fb == 2 || no->fb == -2) {
+        balanceamento(no);
+        if(no->pai->fb == 0 && no->pai != A->sentinela->dir) {
+            atualizaFB_Remocao(no->pai, A);
+        } 
     }
 }
 
 void insereNo(arvore *A, int chave) {
     if(A == NULL) {
         printf("Árvore não encontrada!");
-        return;
+        exit(0);
     }
 
     no *novo = (no*) malloc(sizeof(no));
     if(novo == NULL) {
         printf("Memória não alocada!");
-        return;
+        exit(0);
     }
     novo->chave = chave;
     novo->pai = NULL;
@@ -297,7 +302,7 @@ void insereNo(arvore *A, int chave) {
     atualizaFB_Insercao(novo, A);
 }
 
-void insereArquivo(struct arvore *A, char nomeArquivo[]) {
+void insereArquivo(arvore *A, char nomeArquivo[]) {
     if(A == NULL) {
         printf("Árvore não encontrada!");
         exit(0);
@@ -313,4 +318,46 @@ void insereArquivo(struct arvore *A, char nomeArquivo[]) {
     }
 
     fclose(pa);
+}
+
+void removeNo(arvore *A, int chave) {
+    if(A == NULL) {
+        printf("Árvore não encontrada!");
+        exit(0);
+    }
+
+    no *aux = retornaNo(A, chave);
+    no *sucessor = NULL;
+
+    if(aux->esq != NULL && aux->dir != NULL) {
+        sucessor = aux->dir;
+        while(sucessor->esq != NULL) {
+            sucessor = sucessor->esq;
+        }
+        aux->chave = sucessor->chave;
+        aux = sucessor;
+    }
+    if(aux->esq == NULL && aux->dir == NULL) {
+        sucessor = aux->pai;
+        if(aux->chave < aux->pai->chave) {
+            aux->pai->esq = NULL;
+        } else {
+            aux->pai->dir = NULL;
+        }
+        atualizaFB_Remocao(aux, A);
+        free(aux);
+    } else if(aux->esq != NULL || aux->dir !=NULL) {
+        sucessor = aux;
+        if(aux->esq != NULL) {
+            aux->chave = aux->esq->chave;
+            atualizaFB_Remocao(aux, A);
+            free(aux->esq);
+            aux->esq = NULL;
+        } else {
+            aux->chave = aux->dir->chave;
+            atualizaFB_Remocao(aux, A);
+            free(aux->dir);
+            aux->dir = NULL;
+        }
+    }
 }

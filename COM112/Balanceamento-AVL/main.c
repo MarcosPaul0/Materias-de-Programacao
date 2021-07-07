@@ -1,10 +1,10 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ABP.h"
+#include "AVL.h"
 
 int main(void) {
-  arvore *A = NULL;
+  struct arvore *A = NULL;
   A = criaArvore();
 
   /*insereNo(A, 170);
@@ -18,6 +18,18 @@ int main(void) {
   insereNo(A, 197);
   insereNo(A, 458);*/
   insereArquivo(A, "numeros.txt");
+  percorreArvore(retornaRaiz(A));
+  printf("\n");
+  removeNo(A, 7);
+  removeNo(A, 11);
+  removeNo(A, 144);
+  removeNo(A, 75);
+  removeNo(A, 73);
+  removeNo(A, 150);
+  removeNo(A, 35);
+  removeNo(A, 33);
+  removeNo(A, 3);
+  removeNo(A, 65);
   percorreArvore(retornaRaiz(A));
   return 0;
 }
