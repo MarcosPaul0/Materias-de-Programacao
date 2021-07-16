@@ -56,7 +56,7 @@ noB *alocaNo(arvoreB *A, int f) //passa como parâmetro a árvore e se o nó a s
         return NULL;
     }
 
-    novoNo->ponteiros = (noB**)calloc(A->ordem, sizeof(noB*)); //aloca memória dos ponteiros para os filhos
+    novoNo->ponteiros = (noB**)calloc(A->ordem + 1, sizeof(noB*)); //aloca memória dos ponteiros para os filhos
     novoNo->ocupacao = 0;
     novoNo->folha = f;
     novoNo->pai = NULL;
@@ -98,12 +98,12 @@ void insereElemento(arvoreB *A, int chave)
     
     if(aux->ocupacao == A->ordem) //nó folha está cheio
     {
-        split(A, aux); //realiza o split passando a árvore, no em que o elemnto seria inserido e a chave que será inserida 
+        split(A, aux, chave); //realiza o split passando a árvore, no em que o elemnto seria inserido e a chave que será inserida 
     }
     return;
 }
 
-void split(arvoreB *A, noB *noCheio)
+void split(arvoreB *A, noB *noCheio, int chave)
 {
     int meio = 0; //índice meio do vetor de chaves
     if(A->ordem % 2 == 0) {
@@ -127,9 +127,7 @@ void split(arvoreB *A, noB *noCheio)
         novaRaiz->pai = A->sentinela;
         novaRaiz->ponteiros[0] = noCheio; //aloca os filhos da nova raiz
         novaRaiz->ponteiros[1] = irmao;
-        for(i = meio; i < A->ordem - 1; i++) {
-            noCheio->chaves[i] = noCheio->chaves[i + 1];
-        }
+
         noCheio->ocupacao--; //atualiza a ocupação
         noCheio->pai = novaRaiz;
     }
@@ -145,20 +143,12 @@ void split(arvoreB *A, noB *noCheio)
         noCheio->pai->chaves[i] = Vmeio;
         noCheio->pai->ponteiros[i + 1] = irmao;
         noCheio->pai->ocupacao++;
-
-        for(i = meio; i < A->ordem - 1; i++) {
-            noCheio->chaves[i] = noCheio->chaves[i + 1];
-        }
         noCheio->ocupacao--;
-
-        if (noCheio->pai->ocupacao == A->ordem) { //vai fazer o split no pai recursivamente
-            split(A, noCheio->pai); // **RECURSÃO TEM QUE SER ALTERADO**
-        }
     }
     irmao->pai = noCheio->pai;
     //copiar os elementos maior que o meio para o irmão
     //atualizar os ponteiros
-    for(i=meio; i<A->ordem -1; i++, j++)
+    for(i=meio + 1; i<A->ordem; i++, j++)
     {
         irmao->chaves[j] = noCheio->chaves[i];
         irmao->ponteiros[j] = noCheio->ponteiros[i];
@@ -168,8 +158,13 @@ void split(arvoreB *A, noB *noCheio)
         noCheio->ocupacao--;
     }
     irmao->ponteiros[j] = noCheio->ponteiros[i];
-    if(irmao->ponteiros[j] != NULL)
+    if(irmao->ponteiros[j] != NULL) {
         irmao->ponteiros[j]->pai = irmao;
+    }
+    
+    if (noCheio->pai->ocupacao == A->ordem) { //vai fazer o split no pai recursivamente
+        split(A, noCheio->pai, Vmeio); // **RECURSÃO TEM QUE SER ALTERADO**
+    }
     return;
 }
 
@@ -378,7 +373,7 @@ noB* retornaRaiz(arvoreB *A)
 }
 
 int main() {
-    arvoreB *A = criaArvore(6);
+    arvoreB *A = criaArvore(5);
     insereElemento(A, 30);
     insereElemento(A, 20);
     insereElemento(A, 10);
