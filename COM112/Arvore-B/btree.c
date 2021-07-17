@@ -3,50 +3,50 @@
 
 #include "btree.h"
 
-struct noB{
-    int *chaves;
-    struct noB **ponteiros;
+typedef struct noB{
+    int *chaves; //array de chaves
+    struct noB **ponteiros; //array de ponteiros com o endereço para os filhos
     struct noB *pai;
-    int ocupacao;
+    int ocupacao; //qunatas chaves válidas possui o nó
     int folha; // 0 não é folha; 1 é folha
 };
 
-struct arvore{
+typedef struct arvore{
     struct noB *sentinela;
     int ordem; // representa o número de filhos que o nó pode ter
 };
 
 arvoreB * criaArvore(int ordem)
 {
-    arvoreB *A = (arvoreB*)malloc(sizeof(arvoreB));
+    arvoreB *A = (arvoreB*)malloc(sizeof(arvoreB));//aloca memória para árvore
     if (!A)
     {
         printf("Erro ao alocar memoria");
         return NULL;
     }
-    noB *sent = NULL;
-    A->ordem = ordem;
-    A->sentinela = sent;
+    noB *sent = NULL; //cria sentinela
+    A->ordem = ordem; //seta a ordem da árvore
+    A->sentinela = sent; //seta a sentinela na árvore
     return A;
 }
 
-noB *alocaNo(arvoreB *A, int f)
+noB *alocaNo(arvoreB *A, int f) //passa como parâmetro a árvore e se o nó a ser alocado será folha(1) ou não(0)
 {
-    noB *novoNo = (noB*)malloc(sizeof(noB));
+    noB *novoNo = (noB*)malloc(sizeof(noB)); //aloca memória do novo nó
     if (!novoNo)
     {
         printf("Erro ao alocar memoria");
         return NULL;
     }
 
-    novoNo->chaves = (int*) calloc(A->ordem - 1, sizeof(int));
+    novoNo->chaves = (int*) calloc(A->ordem, sizeof(int)); //aloca memória das chaves do nó
     if (!novoNo->chaves)
     {
         printf("Erro ao alocar memoria");
         return NULL;
     }
 
-    novoNo->ponteiros = (noB**)calloc(A->ordem, sizeof(noB*));
+    novoNo->ponteiros = (noB**)calloc(A->ordem + 1, sizeof(noB*)); //aloca memória dos ponteiros para os filhos
     novoNo->ocupacao = 0;
     novoNo->folha = f;
     novoNo->pai = NULL;
@@ -55,11 +55,11 @@ noB *alocaNo(arvoreB *A, int f)
 
 void insereElemento(arvoreB *A, int chave)
 {
-    noB *aux = A->sentinela;
+    noB *aux = A->sentinela; //começa como a sentinela
     int i;
     if(aux == NULL) //árvore está vazia
     {
-        aux = alocaNo(A, 1);
+        aux = alocaNo(A, 1); //aloca o novo nó na raiz
         aux->chaves[0] = chave;
         aux->ocupacao = 1;
         A->sentinela = aux;
@@ -69,83 +69,76 @@ void insereElemento(arvoreB *A, int chave)
     while(aux->folha == 0) //Procurar a folha correta
     {
         i = 0;
-        while ((aux->chaves[i] < chave) && (i < aux->ocupacao))
+        while ((aux->chaves[i] < chave) && (i < aux->ocupacao) && (i < A->ordem))
         {
-            i++;
+            i++; //procura o ponteiro correto
         }
         aux = aux->ponteiros[i];
     }
-    i = aux->ocupacao;
-    if (i < A->ordem - 1)  // A folha possui espaço para armazenar o elemento
+    i = aux->ocupacao; //recebe o número de ocupações
+    if (i < A->ordem)  // A folha possui espaço para armazenar o elemento **AQUI TEM QUE TER UM ESPAÇO EXTRA**
     {
-        while ((chave < aux->chaves[i - 1]) && (i > 0)) {
-            aux->chaves[i] = aux->chaves[i - 1];
+        while ((chave < aux->chaves[i - 1]) && (i > 0)) { //procura o lugar ideal para inserir a chave
+            aux->chaves[i] = aux->chaves[i - 1]; //faz o shift nos números
             i--;
         }
         aux->chaves[i] = chave;
-        aux->ocupacao++;
+        aux->ocupacao++; //insere e atualiza a ocupação
     }
-    else
+    
+    if(aux->ocupacao == A->ordem) //nó folha está cheio
     {
-        split(A, aux, chave);
+        split(A, aux, chave); //realiza o split passando a árvore, no em que o elemnto seria inserido e a chave que será inserida 
     }
     return;
 }
 
 void split(arvoreB *A, noB *noCheio, int chave)
 {
-    int meio = (A->ordem - 1)/2;
-    int Vmeio = noCheio->chaves[meio];
+    int meio = 0; //índice meio do vetor de chaves
+    if(A->ordem % 2 == 0) {
+        meio = (A->ordem/2) - 1;
+    } else {
+        meio = A->ordem/2;
+    }
+    int Vmeio = noCheio->chaves[meio]; //elemento chave do meio do vetor de chaves
     int i, j = 0;
-    noB *irmao = alocaNo(A, noCheio->folha);
+
+    noB *irmao = alocaNo(A, noCheio->folha); //aloca o irmão, que é a chave do meio nó que estava cheio
     noB *novaRaiz;
-    //SPLIT DE RAIZ
-    if (noCheio == A->sentinela)
+
+    if (noCheio == A->sentinela) //split de raiz
     {
-        novaRaiz = alocaNo(A, 0);
+        novaRaiz = alocaNo(A, 0); //aloca a nova raiz
         //subir o elemento do meio
-        novaRaiz->ocupacao = 1;
-        novaRaiz->chaves[0] = Vmeio;
+        novaRaiz->ocupacao = 1; 
+        novaRaiz->chaves[0] = Vmeio; //coloca o valor do meio do nó que estava cheio no índice 0 da nova raiz
         A->sentinela = novaRaiz;
         novaRaiz->pai = A->sentinela;
-        novaRaiz->ponteiros[0] = noCheio;
+        novaRaiz->ponteiros[0] = noCheio; //aloca os filhos da nova raiz
         novaRaiz->ponteiros[1] = irmao;
-        noCheio->ocupacao--;
+
+        noCheio->ocupacao--; //atualiza a ocupação
         noCheio->pai = novaRaiz;
     }
     //SPLIT DE NÓ INTERMEDIÁRIO OU FOLHA
     else
     {
         i = noCheio->pai->ocupacao;
-        if (i == A->ordem-1) // não tem lugar no pai
-        {
-            split(A, noCheio->pai, Vmeio);
-            i = 0;
-            while (noCheio->pai->chaves[i] < Vmeio)
-            {
-                i++;
-            }
-            noCheio->pai->ponteiros[i+1] = irmao;
-            noCheio->ocupacao--;
+        while(i > 0 && Vmeio < noCheio->pai->chaves[i - 1]) {
+            noCheio->pai->chaves[i] = noCheio->pai->chaves[i - 1];
+            noCheio->pai->ponteiros[i + 1] = noCheio->pai->ponteiros[i];
+            i--;
         }
-        else
-        {
-            while ((i > 0) && (Vmeio < noCheio->pai->chaves[i - 1])) //encontra o lugar certo no pai
-            {
-                noCheio->pai->chaves[i] = noCheio->pai->chaves[i - 1];
-                noCheio->pai->ponteiros[i + 1] = noCheio->pai->ponteiros[i];
-                i--;
-            }
-            noCheio->pai->chaves[i] = Vmeio;
-            noCheio->pai->ponteiros[i + 1] = irmao;
-            noCheio->pai->ocupacao++;
-            noCheio->ocupacao--;
-        }
+        noCheio->pai->chaves[i] = Vmeio;
+        noCheio->pai->ponteiros[i + 1] = irmao;
+        noCheio->pai->ocupacao++;
+        noCheio->ocupacao--;
     }
     irmao->pai = noCheio->pai;
     //copiar os elementos maior que o meio para o irmão
     //atualizar os ponteiros
-    for(i=meio+1; i<A->ordem -1; i++, j++)
+    for(i=meio + 1; i<A->ordem; i++, j++)
     {
         irmao->chaves[j] = noCheio->chaves[i];
         irmao->ponteiros[j] = noCheio->ponteiros[i];
@@ -155,29 +148,12 @@ void split(arvoreB *A, noB *noCheio, int chave)
         noCheio->ocupacao--;
     }
     irmao->ponteiros[j] = noCheio->ponteiros[i];
-    if(irmao->ponteiros[j] != NULL)
+    if(irmao->ponteiros[j] != NULL) {
         irmao->ponteiros[j]->pai = irmao;
-    //inserir a chave no local correto no noCheio ou irmão
-    if(chave < Vmeio)
-    {
-        i = noCheio->ocupacao;
-        while ((i > 0) && (chave < noCheio->chaves[i - 1])) {
-            noCheio->chaves[i] = noCheio->chaves[i - 1];
-            i--;
-        }
-        noCheio->chaves[i] = chave;
-        noCheio->ponteiros[i+1] = noCheio->ponteiros[i];
-        noCheio->ocupacao++;
     }
-    else
-    {
-        i = irmao->ocupacao;
-        while ((i > 0) && (chave < irmao->chaves[i - 1])) {
-            irmao->chaves[i] = irmao->chaves[i - 1];
-            i--;
-        }
-        irmao->chaves[i] = chave;
-        irmao->ocupacao++;
+    
+    if (noCheio->pai->ocupacao == A->ordem) { //vai fazer o split no pai recursivamente
+        split(A, noCheio->pai, Vmeio); // **RECURSÃO TEM QUE SER ALTERADO**
     }
     return;
 }
@@ -379,7 +355,6 @@ void imprimeArvore(noB *raiz)
         i++;
     }
 }
-
 
 noB* retornaRaiz(arvoreB *A)
 {

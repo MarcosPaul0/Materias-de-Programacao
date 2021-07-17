@@ -1,16 +1,12 @@
 #include <stdio.h>
+#include <stdlib.h>
 
-/*  **A árvore B deve ser capaz de receber ordens pares e ímpares. No código
-    disponibilizado a ordem deve ser sempre par.
-    **Implementar o split e o merge preventivo. Ou seja, se na inserção o nó no
-    caminho da inserção está cheio, o split é realizado. Na remoção, se o nó no
-    caminho da remoção estiver na capacidade mínima, realiza-se o merge. No
-    código disponibilizado o split e o merge acontecem recursivamente, a partir da
-    folha.
+/*  
+    **A árvore B deve ser capaz de receber ordens pares e ímpares. No código disponibilizado a ordem deve ser sempre par. [FEITO PORRA]
+    **Implementar o split preventivo. Ou seja, se na inserção o nó no caminho da inserção está cheio, o split é realizado. No código disponibilizado o split acontece recursivamente, a partir da folha.
     **Vocês podem realizar a tarefa em dupla.
     **Essa tarefa tem peso 2 na nota. Ou seja, a nota vale por 2 atividades.
-    **Qualquer problema encontrado no código disponibilizado, favor comunicar a
-    mim e aos colegas.
+    **Qualquer problema encontrado no código disponibilizado, favor comunicar a mim e aos colegas.
 */
 
 typedef struct noB{
@@ -78,6 +74,9 @@ void insereElemento(arvoreB *A, int chave)
     }
     while(aux->folha == 0) //Procurar a folha correta
     {
+        if(aux->ocupacao == A->ordem - 1) {
+            split(A, aux);
+        }
         i = 0;
         while ((aux->chaves[i] < chave) && (i < aux->ocupacao) && (i < A->ordem))
         {
@@ -98,17 +97,21 @@ void insereElemento(arvoreB *A, int chave)
     
     if(aux->ocupacao == A->ordem) //nó folha está cheio
     {
-        split(A, aux, chave); //realiza o split passando a árvore, no em que o elemnto seria inserido e a chave que será inserida 
+        split(A, aux); //realiza o split passando a árvore, no em que o elemnto seria inserido e a chave que será inserida 
     }
     return;
 }
 
-void split(arvoreB *A, noB *noCheio, int chave)
+void split(arvoreB *A, noB *noCheio)
 {
+    int ocupacaoIntermed = A->ordem; //serve para realizar a atualização dos valores do irmão
     int meio = 0; //índice meio do vetor de chaves
-    if(A->ordem % 2 == 0) {
+    if(noCheio->ocupacao == A->ordem - 1) {
+        meio = (noCheio->ocupacao - 1) / 2;
+        ocupacaoIntermed = noCheio->ocupacao;
+    } else if(A->ordem % 2 == 0) {
         meio = (A->ordem/2) - 1;
-    } else {
+    } else if(A->ordem % 2 != 0) {
         meio = A->ordem/2;
     }
     int Vmeio = noCheio->chaves[meio]; //elemento chave do meio do vetor de chaves
@@ -134,7 +137,7 @@ void split(arvoreB *A, noB *noCheio, int chave)
     //SPLIT DE NÓ INTERMEDIÁRIO OU FOLHA
     else
     {
-        i = noCheio->pai->ocupacao;
+        i = noCheio->pai->ocupacao; //insere o elemento na posição correta do pai
         while(i > 0 && Vmeio < noCheio->pai->chaves[i - 1]) {
             noCheio->pai->chaves[i] = noCheio->pai->chaves[i - 1];
             noCheio->pai->ponteiros[i + 1] = noCheio->pai->ponteiros[i];
@@ -148,7 +151,7 @@ void split(arvoreB *A, noB *noCheio, int chave)
     irmao->pai = noCheio->pai;
     //copiar os elementos maior que o meio para o irmão
     //atualizar os ponteiros
-    for(i=meio + 1; i<A->ordem; i++, j++)
+    for(i=meio + 1; i< ocupacaoIntermed; i++, j++)
     {
         irmao->chaves[j] = noCheio->chaves[i];
         irmao->ponteiros[j] = noCheio->ponteiros[i];
@@ -160,10 +163,6 @@ void split(arvoreB *A, noB *noCheio, int chave)
     irmao->ponteiros[j] = noCheio->ponteiros[i];
     if(irmao->ponteiros[j] != NULL) {
         irmao->ponteiros[j]->pai = irmao;
-    }
-    
-    if (noCheio->pai->ocupacao == A->ordem) { //vai fazer o split no pai recursivamente
-        split(A, noCheio->pai, Vmeio); // **RECURSÃO TEM QUE SER ALTERADO**
     }
     return;
 }
@@ -366,7 +365,6 @@ void imprimeArvore(noB *raiz)
     }
 }
 
-
 noB* retornaRaiz(arvoreB *A)
 {
     return A->sentinela;
@@ -374,6 +372,18 @@ noB* retornaRaiz(arvoreB *A)
 
 int main() {
     arvoreB *A = criaArvore(5);
+    insereElemento(A, 20);
+    insereElemento(A, 40);
+    insereElemento(A, 60);
+    insereElemento(A, 80);
+    insereElemento(A, 100);
+    insereElemento(A, 50);
+    insereElemento(A, 60);
+    insereElemento(A, 62);
+    insereElemento(A, 63);
+    insereElemento(A, 70);
+    //insereElemento(A, 36);
+    /* arvoreB *A = criaArvore(6);
     insereElemento(A, 30);
     insereElemento(A, 20);
     insereElemento(A, 10);
@@ -383,7 +393,7 @@ int main() {
     insereElemento(A, 15);
     insereElemento(A, 12);
     insereElemento(A, 13);
-    insereElemento(A, 14);
+    insereElemento(A, 14); */
     imprimeArvore(retornaRaiz(A));
     return 0;
 }
