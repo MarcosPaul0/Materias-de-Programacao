@@ -371,17 +371,18 @@ noB* retornaRaiz(arvoreB *A)
 }
 
 int main() {
-    arvoreB *A = criaArvore(5);
-    insereElemento(A, 20);
-    insereElemento(A, 40);
-    insereElemento(A, 60);
-    insereElemento(A, 80);
-    insereElemento(A, 100);
-    insereElemento(A, 50);
-    insereElemento(A, 60);
-    insereElemento(A, 62);
-    insereElemento(A, 63);
-    insereElemento(A, 70);
+    arvoreB *A = criaArvore(4);
+    insereElemento(A, 14);
+    insereElemento(A, 39);
+    insereElemento(A, 1);
+    insereElemento(A, 6);
+    insereElemento(A, 41);
+    insereElemento(A, 32);
+    insereElemento(A, 8);
+    insereElemento(A, 38);
+    insereElemento(A, 43);
+    insereElemento(A, 3);
+    insereElemento(A, 36);
     //insereElemento(A, 36);
     /* arvoreB *A = criaArvore(6);
     insereElemento(A, 30);

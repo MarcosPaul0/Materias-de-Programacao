@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-#include "ARN.h"
+#include "rubroNegra.h"
 
 struct no {
     int chave;
@@ -182,9 +182,10 @@ void balanceamentoInsercao(arvore *A, no *no) {
 
 void balanceamentoRemocao(arvore *A, no *no) {
     struct no *irmao;
-    struct no *pai = no->pai;
+    struct no *pai;
 
     while(no != A->sentinela->dir && no->cor == 'p') {
+        pai = no->pai;
         if(pai->esq == no) {
             irmao = pai->dir;
             if(irmao->cor == 'v') {
@@ -209,7 +210,7 @@ void balanceamentoRemocao(arvore *A, no *no) {
                 rotEsq(A, pai);
                 no = A->sentinela->dir;
             }
-        } else {
+        } else { //direita
             irmao = pai->esq;
             if(irmao->cor == 'v') {
                 irmao->cor = 'p';
@@ -217,6 +218,7 @@ void balanceamentoRemocao(arvore *A, no *no) {
                 rotDir(A, pai);
                 irmao = pai->esq;
             }
+            
             if(irmao->esq->cor == 'p' && irmao->dir->cor == 'p') {
                 irmao->cor = 'v';
                 no = pai;
@@ -346,10 +348,7 @@ void removeNo(arvore *A, int chave) {
         }
         A->sentinelaFolha->pai = NULL;
         free(aux);
-        return;
-    }
-
-    if(aux->esq != A->sentinelaFolha || aux->dir != A->sentinelaFolha) {
+    } else if (aux->esq != A->sentinelaFolha || aux->dir != A->sentinelaFolha) {
         if(aux->esq != A->sentinelaFolha) {
             auxBalanceamento = aux->esq;
             if(aux->chave < aux->pai->chave) {
@@ -358,8 +357,7 @@ void removeNo(arvore *A, int chave) {
                 aux->pai->dir = aux->esq;
             }
             aux->esq->pai = aux->pai;
-        }
-        if(aux->dir != A->sentinelaFolha) {
+        } else if(aux->dir != A->sentinelaFolha) {
             auxBalanceamento = aux->dir;
             if(aux->chave < aux->pai->chave) {
                 aux->pai->esq = aux->dir;
