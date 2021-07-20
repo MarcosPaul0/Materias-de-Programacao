@@ -2,7 +2,7 @@
 #include <stdlib.h>
 
 /*  
-    **A árvore B deve ser capaz de receber ordens pares e ímpares. No código disponibilizado a ordem deve ser sempre par. [FEITO PORRA]
+    **A árvore B deve ser capaz de receber ordens pares e ímpares. No código disponibilizado a ordem deve ser sempre par.
     **Implementar o split preventivo. Ou seja, se na inserção o nó no caminho da inserção está cheio, o split é realizado. No código disponibilizado o split acontece recursivamente, a partir da folha.
     **Vocês podem realizar a tarefa em dupla.
     **Essa tarefa tem peso 2 na nota. Ou seja, a nota vale por 2 atividades.
@@ -62,7 +62,7 @@ noB *alocaNo(arvoreB *A, int f) //passa como parâmetro a árvore e se o nó a s
 void insereElemento(arvoreB *A, int chave)
 {
     noB *aux = A->sentinela; //começa como a sentinela
-    int i;
+    int i, validacao = 0;
     if(aux == NULL) //árvore está vazia
     {
         aux = alocaNo(A, 1); //aloca o novo nó na raiz
@@ -74,8 +74,10 @@ void insereElemento(arvoreB *A, int chave)
     }
     while(aux->folha == 0) //Procurar a folha correta
     {
-        if(aux->ocupacao == A->ordem - 1) {
+        if(aux->ocupacao == A->ordem - 1 && aux->folha == 0 && validacao != 1) {
             split(A, aux);
+            validacao = 1;
+            aux = aux->pai;
         }
         i = 0;
         while ((aux->chaves[i] < chave) && (i < aux->ocupacao) && (i < A->ordem))
@@ -84,16 +86,14 @@ void insereElemento(arvoreB *A, int chave)
         }
         aux = aux->ponteiros[i];
     }
+
     i = aux->ocupacao; //recebe o número de ocupações
-    if (i < A->ordem)  // A folha possui espaço para armazenar o elemento **AQUI TEM QUE TER UM ESPAÇO EXTRA**
-    {
-        while ((chave < aux->chaves[i - 1]) && (i > 0)) { //procura o lugar ideal para inserir a chave
-            aux->chaves[i] = aux->chaves[i - 1]; //faz o shift nos números
-            i--;
-        }
-        aux->chaves[i] = chave;
-        aux->ocupacao++; //insere e atualiza a ocupação
+    while ((chave < aux->chaves[i - 1]) && (i > 0)) { //procura o lugar ideal para inserir a chave
+        aux->chaves[i] = aux->chaves[i - 1]; //faz o shift nos números
+        i--;
     }
+    aux->chaves[i] = chave;
+    aux->ocupacao++; //insere e atualiza a ocupação
     
     if(aux->ocupacao == A->ordem) //nó folha está cheio
     {
@@ -371,21 +371,30 @@ noB* retornaRaiz(arvoreB *A)
 }
 
 int main() {
-    arvoreB *A = criaArvore(4);
-    insereElemento(A, 14);
-    insereElemento(A, 39);
+    arvoreB *A = criaArvore(5);
     insereElemento(A, 1);
-    insereElemento(A, 6);
-    insereElemento(A, 41);
-    insereElemento(A, 32);
-    insereElemento(A, 8);
-    insereElemento(A, 38);
-    insereElemento(A, 43);
+    insereElemento(A, 2);
     insereElemento(A, 3);
-    insereElemento(A, 36);
-    //insereElemento(A, 36);
-    /* arvoreB *A = criaArvore(6);
-    insereElemento(A, 30);
+    insereElemento(A, 4);
+    insereElemento(A, 5);
+    insereElemento(A, 6);
+    insereElemento(A, 7);
+    insereElemento(A, 8);
+    insereElemento(A, 9);
+    insereElemento(A, 10);
+    insereElemento(A, 11); 
+    insereElemento(A, 12);
+    insereElemento(A, 13);
+    insereElemento(A, 14);
+    insereElemento(A, 15);
+    /*insereElemento(A, 16);
+    insereElemento(A, 17);
+    insereElemento(A, 18);
+    insereElemento(A, 19);
+    insereElemento(A, 20);
+    insereElemento(A, 21);
+    insereElemento(A, 22); */
+    /* insereElemento(A, 30);
     insereElemento(A, 20);
     insereElemento(A, 10);
     insereElemento(A, 5);
@@ -394,7 +403,9 @@ int main() {
     insereElemento(A, 15);
     insereElemento(A, 12);
     insereElemento(A, 13);
-    insereElemento(A, 14); */
+    insereElemento(A, 14);
+    imprimeArvore(retornaRaiz(A));
+    removeElemento(A, 10); */
     imprimeArvore(retornaRaiz(A));
     return 0;
 }
